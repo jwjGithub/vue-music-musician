@@ -1,0 +1,22 @@
+@import './icon.scss';
+@import './element-ui.scss';
+@import './common.scss';
+html{
+  height:100%;
+  overflow:auto;
+}
+body {
+  height: 100%;
+  min-width: 1180px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: '微软雅黑', '思源黑体', Arial;
+}
+#app {
+  height: 100%;
+}
+
+.c-999{
+  color:#999;
+}

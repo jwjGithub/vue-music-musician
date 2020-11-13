@@ -1,0 +1,83 @@
+@for $n from 1 through 50{
+  .l#{$n}{left:(1px * $n) !important;}
+  .t#{$n}{top:(1px * $n) !important;}
+  .r#{$n}{right:(1px * $n) !important;}
+  .b#{$n}{bottom:(1px * $n) !important;}
+  .mt#{$n}{margin-top:(1px * $n) !important;}
+  .ml#{$n}{margin-left:(1px * $n) !important;}
+  .mr#{$n}{margin-right:(1px * $n) !important;}
+  .mb#{$n}{margin-bottom:(1px * $n) !important;}
+  .pt#{$n}{padding-top:(1px * $n) !important;}
+  .pl#{$n}{padding-left:(1px * $n) !important;}
+  .pr#{$n}{padding-right:(1px * $n) !important;}
+  .pb#{$n}{padding-bottom:(1px * $n) !important;}
+  .w#{$n}{width:(10px * $n) !important;}
+  .h#{$n}{height:(10px * $n) !important;}
+  .lh#{$n}{line-height:(1px * $n) !important;}
+  // 两倍元素
+  .mtx#{$n}{margin-top:(2px * $n) !important;}
+  .mlx#{$n}{margin-left:(2px * $n) !important;}
+  .mrx#{$n}{margin-right:(2px * $n) !important;}
+  .mbx#{$n}{margin-bottom:(2px * $n) !important;}
+  .ptx#{$n}{padding-top:(2px * $n) !important;}
+  .plx#{$n}{padding-left:(2px * $n) !important;}
+  .prx#{$n}{padding-right:(2px * $n) !important;}
+  .pbx#{$n}{padding-bottom:(2px * $n) !important;}
+  .wx#{$n}{width:(20px * $n) !important;}
+  .hx#{$n}{height:(20px * $n) !important;}
+  // 设置form表单标题宽度
+  @if $n >= 6 and $n <= 20{
+    .form-label-w#{$n} .el-form-item .el-form-item__label{width:(10px * $n) !important;}
+  }
+  @if $n >= 12 and $n <= 48{
+    .ft#{$n}{font-size:(1px * $n) !important;}
+  }
+  @if $n > 1 and $n < 6{
+    .ellipsis#{$n}{
+      display: -webkit-box;
+      word-break: break-all;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: $n;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  @if $n < 10{
+    .ls#{$n}{ letter-spacing: (1px * $n) !important; }
+    .fw#{$n}{ font-weight: (100 * $n) !important; }
+  }
+}
+.ellipsis{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+// 手势
+.pointer{
+  cursor: pointer;
+}
+.text-left{
+  text-align:left;
+}
+.text-center{
+  text-align:center;
+}
+.text-right{
+  text-align:right;
+}
+// flex 布局
+.space-between{
+  display:flex;
+  justify-content: space-between;
+}
+.justify-center{
+  display:flex;
+  justify-content: center;
+}
+.align-center{
+  display:flex;
+  align-items:center;
+}
+.flex-1{
+  flex:1;
+}
