@@ -1,3 +1,10 @@
+/*
+ * @Date: 2020-11-13 09:28:55
+ * @Description:
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-11-13 14:04:04
+ * @FilePath: \vue-music-musician\vue.config.js
+ */
 'use strict'
 
 const path = require('path')
@@ -7,7 +14,7 @@ function resolve(dir) {
 }
 const name = 'Music' // 标题
 
-const port = process.env.port || 9081 // 端口
+const port = process.env.port || 9083 // 端口
 
 module.exports = {
   // 如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.xxx.com/admin/，则设置 baseUrl 为 /admin/。

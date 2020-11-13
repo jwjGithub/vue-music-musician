@@ -1,3 +1,4 @@
+// import router from '@/router'
 /**
  * Check if an element has a class
  * @param {HTMLElement} elm
@@ -112,4 +113,9 @@ export function strlen(str) {
     }
   }
   return len
+}
+
+// 调整到music系统
+export function goMusic(url, query) {
+  window.location = 'http://47.94.21.246:9081/'
 }
