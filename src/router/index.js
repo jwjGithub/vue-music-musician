@@ -2,20 +2,25 @@
  * @Date: 2020-11-13 09:28:54
  * @Description: 路由配置
  * @LastEditors: JWJ
- * @LastEditTime: 2020-11-13 11:53:10
+ * @LastEditTime: 2020-11-20 14:33:13
  * @FilePath: \vue-music-musician\src\router\index.js
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
-
+import Layout from '@/views/layout/index'
 const routes = [
   {
     path: '/',
-    name: 'Index',
-    meta: { title: '首页' },
-    component: () => import('@/views/home')
+    component: Layout,
+    redirect: '/uploadWorks',
+    children: [{
+      path: 'uploadWorks',
+      name: 'UploadWorks',
+      component: () => import('@/views/uploadWorks/index'),
+      meta: { title: '上传作品' }
+    }]
   }
   // {
   //   path: '/demand',
