@@ -21,12 +21,14 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   document.title = getPageTitle(to.meta.title)
   if (getToken()) {
-    if (!store.getters.name) {
-      store.dispatch('user/GetInfo').then(res => {
-
+    if (!store.getters.userInfo.userId) {
+      store.dispatch('GetInfo').then(() => {
+        next()
       })
+    } else {
+      next()
     }
-    next()
+
     // 判断当前是否已经添加路由
     // if (store.getters.permission_routes.length === 0) {
     //   store.dispatch('GenerateRoutes').then(accessRoutes => {

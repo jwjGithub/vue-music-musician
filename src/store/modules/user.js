@@ -1,5 +1,5 @@
 // import { login, logout, getInfo } from '@/api/login'
-import { musicianLogin, companyLogin } from '@/api/login'
+import { musicianLogin, companyLogin, getUserInfo } from '@/api/login'
 import { getToken, removeToken, setToken } from '@/utils/auth'
 
 const user = {
@@ -52,19 +52,19 @@ const user = {
         })
       })
     },
-
     // 获取用户信息
-    // GetInfo({ commit, state }) {
-    //   return new Promise((resolve, reject) => {
-    //     resolve()
-    //     getUserInfo().then(res => {
-    //       commit('SET_USERINFO', res.data || {})
-    //       resolve(res)
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
+    GetInfo({ commit }) {
+      return new Promise((resolve, reject) => {
+        resolve()
+        getUserInfo().then(res => {
+          commit('SET_USERINFO', res.data || {})
+          commit('SET_LOGINTYPE', 'musician')
+          resolve(res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 退出系统
     // LogOut({ commit, state }) {
     //   return new Promise((resolve, reject) => {

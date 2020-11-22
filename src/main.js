@@ -9,6 +9,7 @@ import './permission' // permission control
 // 全局组件引入
 import MusHeader from '@/components/page/MusHeader'
 import MusFooter from '@/components/page/MusFooter'
+import MusDialog from '@/components/MusDialog'
 
 // 全局方法引入
 import { goLocation, parseTime, resetForm } from '@/utils/index'
@@ -36,6 +37,7 @@ Vue.prototype.GoWindow = function(url) {
 // 全局组件挂载
 Vue.component('MusHeader', MusHeader)
 Vue.component('MusFooter', MusFooter)
+Vue.component('MusDialog', MusDialog)
 Vue.use(Element)
 new Vue({
   router,

@@ -13,11 +13,14 @@
     }
   }
 }
-.el-textarea{
-  .el-textarea__inner{
-    border-radius:20px;
-  }
+.el-link{
+  vertical-align:unset;
 }
+// .el-textarea{
+//   .el-textarea__inner{
+//     border-radius:20px;
+//   }
+// }
 // 按钮
 .el-button--success{
   &.el-loading-parent--relative{

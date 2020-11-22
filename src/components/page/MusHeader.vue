@@ -62,7 +62,7 @@
               <el-button class="text-btn" type="text" @click="GoWindow('http://47.94.21.246:9082/#/?token=' + getToken())">办公空间</el-button>
             </div>
             <div v-if="$store.getters.loginType == 'musician'" class="list">
-              <el-button class="text-btn" type="text" @click="GoWindow('http://47.94.21.246:9082/#/?token=' + getToken())">个人空间</el-button>
+              <el-button class="text-btn" type="text" @click="GoWindow('http://47.94.21.246:9083/#/?token=' + getToken())">个人空间</el-button>
             </div>
             <div class="list">
               <el-button class="text-btn" type="text" @click="logOut">退出登录</el-button>
@@ -148,6 +148,9 @@
                 @click="dialogOption.showPass = !dialogOption.showPass"
               ></i>
             </el-input>
+            <p class="lh40 text-left">
+              <el-checkbox v-model="savePassword">记住密码</el-checkbox>
+            </p>
           </el-form-item>
           <el-form-item>
             <el-button v-loading="dialogOption.loading" plain type="warning" class="w28" @click="handleConfirm">登录</el-button>
@@ -184,6 +187,7 @@ export default {
         loading: false,
         show: false
       },
+      savePassword: false, // 记住密码
       loginType: '', // 登录类型 musician:音乐人登录 company:公司登录
       form: {
         username: '',
@@ -206,6 +210,24 @@ export default {
     openLogin(loginType) {
       this.loginType = loginType
       this.dialogOption.show = true
+      if (this.loginType === 'musician') {
+        let form = localStorage.SAVEPASSWORDMUSICIAN
+        if (form) {
+          this.form = JSON.parse(form)
+          this.savePassword = true
+        } else {
+          this.savePassword = false
+        }
+      }
+      if (this.loginType === 'company') {
+        let form = localStorage.SAVEPASSWORDCOMPANY
+        if (form) {
+          this.savePassword = true
+          this.form = JSON.parse(form)
+        } else {
+          this.savePassword = false
+        }
+      }
       this.resetForm('form')
     },
     logOut() {
@@ -220,7 +242,12 @@ export default {
           this.dialogOption.loading = true
           if (this.loginType === 'musician') {
             this.$store.dispatch('MusicianLogin', this.form).then(() => {
-              console.log('-登录成功')
+              // 记住密码操作
+              if (this.savePassword) {
+                localStorage.SAVEPASSWORDMUSICIAN = JSON.stringify(this.form)
+              } else {
+                localStorage.SAVEPASSWORDMUSICIAN = ''
+              }
               this.dialogOption.loading = false
               this.dialogOption.show = false
             }).catch(() => {
@@ -229,6 +256,12 @@ export default {
           }
           if (this.loginType === 'company') {
             this.$store.dispatch('CompanyLogin', this.form).then(() => {
+              // 记住密码操作
+              if (this.savePassword) {
+                localStorage.SAVEPASSWORDCOMPANY = JSON.stringify(this.form)
+              } else {
+                localStorage.SAVEPASSWORDCOMPANY = ''
+              }
               this.dialogOption.loading = false
               this.dialogOption.show = false
             }).catch(() => {

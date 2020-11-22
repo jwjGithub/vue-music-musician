@@ -16,3 +16,11 @@ export function companyLogin(data) {
     data: data
   })
 }
+// 获取音乐人信息
+export function getUserInfo(data) {
+  return request({
+    url: '/sys/user/musicianinfo',
+    method: 'post',
+    data: data
+  })
+}
