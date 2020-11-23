@@ -1,3 +1,10 @@
+/*
+ * @Date: 2020-11-13 09:28:53
+ * @Description: 登录基础接口
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-11-23 10:28:08
+ * @FilePath: \vue-music-musician\src\api\login.js
+ */
 import request from '@/utils/request'
 
 // 音乐人登录
@@ -20,7 +27,7 @@ export function companyLogin(data) {
 export function getUserInfo(data) {
   return request({
     url: '/sys/user/musicianinfo',
-    method: 'post',
+    method: 'get',
     data: data
   })
 }
