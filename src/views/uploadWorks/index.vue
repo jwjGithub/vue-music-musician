@@ -121,8 +121,9 @@
             <el-form-item v-if="form.type == 1 || form.type == 4" label="歌词：" prop="lyricContent">
               <el-input v-model="form.lyricContent" type="textarea" :rows="4" placeholder="请输入" :resize="'none'" class="w40"></el-input>
             </el-form-item>
-            <el-form-item v-if="form.type !== 4" label="音频：">
-              <el-button type="primary" size="mini" icon="el-icon-plus" :loading="uploadLoading" @click="openFileUpload">上传音频文件</el-button>
+            <el-form-item v-if="form.type !== 4" label="音频：" prop="musicAtt">
+              <el-button type="primary" size="mini" icon="el-icon-plus" :loading="uploadLoading" @click="openFileUpload">{{ uploadName || '上传音频文件' }}</el-button>
+              <span class="ft14 c-999 ml10 lh28">支持MP3格式，文件大小不超过20MB</span>
             </el-form-item>
             <el-form-item>
               <el-checkbox v-model="xuzhi"></el-checkbox>
@@ -189,6 +190,7 @@ export default {
     return {
       loading: false,
       uploadLoading: false, // 上传loading
+      uploadName: '', // 上传名称
       xuzhi: false, // 须知
       lyricistsList: [], // 词作者列表
       lyricistsLoading: false, // 词作者loading
@@ -238,6 +240,9 @@ export default {
         ],
         lyricContent: [
           { required: true, message: '请输入歌词', trigger: 'blur' }
+        ],
+        musicAtt: [
+          { required: true, message: '请上传音频文件', trigger: ['change'] }
         ]
       },
       // 默认弹窗对象
@@ -330,18 +335,23 @@ export default {
     handleConfirm() {
       this.dialogOption.show = false
     },
-    // 用户过滤 -sb
+    // 用户过滤 -
     setUserFilter(data) {
       let list = JSON.parse(JSON.stringify(data))
       let arr = []
       list.forEach(item => {
         if (typeof item === 'string') {
           arr.push({
-            stageName: item,
+            authorName: item,
+            // stageName: item,
             userId: null
           })
         } else {
-          arr.push(item)
+          arr.push({
+            authorName: item.stageName,
+            userId: item.userId
+          })
+          // arr.push(item)
         }
       })
       return arr
@@ -401,6 +411,7 @@ export default {
           this.form.musicAtt = data.musicAtt
           this.form.musicWatermarkAtt = data.musicWatermarkAtt
           this.uploadLoading = false
+          this.uploadName = file.name
         }).catch(() => {
           this.uploadLoading = false
         })

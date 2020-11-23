@@ -32,5 +32,18 @@
     height: 16px;
     background-image:url('~@/assets/images/icon/icon-company.png');
   }
+  // 音乐人-个人主页
+  &.icon-musician-user{
+    width: 24px;
+    height: 26px;
+    background-image:url('~@/assets/images/musician/icon-musician-user.png');
+  }
+  // 音乐人-作品管理
+  &.icon-musician-zpgl{
+    width: 24px;
+    height: 24px;
+    background-image:url('~@/assets/images/musician/icon-musician-zpgl.png');
+  }
+
 
 }

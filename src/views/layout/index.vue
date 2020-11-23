@@ -12,7 +12,14 @@
       <div class="content">
         <div class="content-home">
           <div class="left-nav">
-            <div class="nav-list"></div>
+            <div class="nav-list">
+              <div v-for="(item,index) in navList" :key="index" class="list" :class="item.name == navSelectName ? 'active' : ''">
+                <div class="list-icon">
+                  <i class="icon" :class="item.icon"></i>
+                </div>
+                <div class="title">{{ item.title }}</div>
+              </div>
+            </div>
           </div>
           <div class="right-content">
             <el-scrollbar class="custom-scrollbar">
@@ -26,7 +33,25 @@
 </template>
 <script>
 export default {
-
+  name: 'Layout',
+  data() {
+    return {
+      navSelectName: '', // 路由选中name
+      navList: [
+        { title: '个人主页', icon: 'icon-musician-user', name: 'usere' },
+        { title: '上传作品', icon: 'icon-musician-zpgl', name: 'UploadWorks' }
+      ]
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.navSelectName = route.name
+        console.log(route, 'route')
+      },
+      immediate: true
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -49,8 +74,9 @@ export default {
           >.left-nav{
             padding: 20px;
             >.nav-list{
+              padding:20px 0;
               width: 200px;
-              height: 100%;
+              height: calc(100% - 40px);
               background-image: linear-gradient(0deg,
                 #bd3f32 0%,
                 #cb356b 100%),
@@ -60,6 +86,28 @@ export default {
               background-blend-mode: normal,
                 normal;
               border-radius: 4px;
+              >.list{
+                width:100%;
+                height:60px;
+                display:flex;
+                align-items: center;
+                margin-bottom:1px;
+                cursor: pointer;
+                >.list-icon{
+                  padding-left:56px;
+                  padding-right:10px;
+                }
+                >.title{
+                  flex:1;
+                  overflow: hidden;
+                  font-size:18px;
+                  color: #fffefe;
+                  letter-spacing: 1px;
+                }
+                &.active,&:hover{
+                  background-color:#D76E93;
+                }
+              }
             }
           }
           >.right-content{
