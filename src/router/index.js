@@ -14,13 +14,21 @@ const routes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/uploadWorks',
-    children: [{
-      path: 'uploadWorks',
-      name: 'UploadWorks',
-      component: () => import('@/views/uploadWorks/index'),
-      meta: { title: '上传作品' }
-    }]
+    redirect: '/index',
+    children: [
+      {
+        path: 'index',
+        name: 'UserIndex',
+        component: () => import('@/views/musician/user/index'),
+        meta: { title: '个人主页' }
+      },
+      {
+        path: 'uploadWorks',
+        name: 'UploadWorks',
+        component: () => import('@/views/uploadWorks/index'),
+        meta: { title: '上传作品' }
+      }
+    ]
   }
   // {
   //   path: '/demand',

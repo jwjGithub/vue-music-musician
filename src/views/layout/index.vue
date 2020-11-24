@@ -13,7 +13,7 @@
         <div class="content-home">
           <div class="left-nav">
             <div class="nav-list">
-              <div v-for="(item,index) in navList" :key="index" class="list" :class="item.name == navSelectName ? 'active' : ''">
+              <div v-for="(item,index) in navList" :key="index" class="list" :class="item.name == navSelectName ? 'active' : ''" @click="Go(item.url)">
                 <div class="list-icon">
                   <i class="icon" :class="item.icon"></i>
                 </div>
@@ -38,8 +38,8 @@ export default {
     return {
       navSelectName: '', // 路由选中name
       navList: [
-        { title: '个人主页', icon: 'icon-musician-user', name: 'usere' },
-        { title: '上传作品', icon: 'icon-musician-zpgl', name: 'UploadWorks' }
+        { title: '个人主页', icon: 'icon-musician-user', name: 'UserIndex', url: '/index' },
+        { title: '上传作品', icon: 'icon-musician-zpgl', name: 'UploadWorks', url: '/uploadWorks' }
       ]
     }
   },
