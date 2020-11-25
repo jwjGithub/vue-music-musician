@@ -16,22 +16,19 @@
             </div>
             <div class="info-texts">
               <div class="info-title">
-                <div class="info-name">张三（艺名）</div>
+                <div class="info-name">{{ $store.getters.userInfo.realname || '-' }}（{{ $store.getters.userInfo.stageName || '-' }}）</div>
                 <el-button size="mini">编辑个人资料</el-button>
               </div>
               <div class="info-row">
-                <div class="info-row-title ">入驻事件：</div>
-                <div class="info-row-text">2020-10-30</div>
+                <div class="info-row-title ">入驻时间：</div>
+                <div class="info-row-text">{{ $store.getters.userInfo.createTime || '-' }}</div>
               </div>
               <div class="info-row">
-                <div class="info-row-title ">作词、作曲、编曲</div>
+                <div class="info-row-title ">{{ $store.getters.userInfo.professiondesc || '-' }}</div>
               </div>
               <div class="info-row">
                 <div class="info-row-title ">个人简介：</div>
-                <div class="info-row-text">
-                  显示三行，单行显示数字根据具体排版进行调整
-                  剩余部分点击更多显示剩余部分点击更多显示剩
-                </div>
+                <div class="info-row-text" v-html="$store.getters.userInfo.introduction || '-'"></div>
               </div>
             </div>
           </div>
@@ -189,6 +186,10 @@ export default {
             overflow: hidden;
             max-width: 500px;
             line-height: 30px;
+            img{
+              max-width: 100%;
+              max-height:400px;
+            }
           }
         }
       }

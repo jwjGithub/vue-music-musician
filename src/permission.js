@@ -45,8 +45,8 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // 否则全部重定向到曲库
-      // window.location = 'http://47.94.21.246:9081/'
-      next()
+      window.location = 'http://47.94.21.246:9081/'
+      // next()
       // next(`/login?redirect=${to.path}`)
       NProgress.done()
     }
