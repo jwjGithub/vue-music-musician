@@ -1,141 +1,14 @@
 <!--
- * @Date: 2020-11-20 14:30:56
- * @Description: 上传作品
+ * @Date: 2020-11-26 14:19:44
+ * @Description: 作品管理
  * @LastEditors: JWJ
- * @LastEditTime: 2020-11-26 14:19:08
- * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
+ * @LastEditTime: 2020-11-26 14:21:15
+ * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
   <div class="main upload-workes">
     <div class="main-content">
       <el-row>
-        <el-col :span="24" class="ptx40 pr40 pl40">
-          <el-form ref="form" :model="form" :rules="rules" label-width="200px">
-            <el-form-item label="上传作品类型：" prop="type">
-              <el-select v-model="form.type" class="w40">
-                <el-option label="词曲" :value="1" />
-                <el-option label="Beat/BGM" :value="2" />
-                <el-option label="作曲" :value="3" />
-                <el-option label="作词" :value="4" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="作品名称：" prop="title">
-              <el-input v-model="form.title" placeholder="请输入" maxlength="30" class="w40"></el-input>
-            </el-form-item>
-            <el-form-item v-if="form.type == 1 || form.type == 4" label="词作者：" prop="lyricists">
-              <el-select
-                v-model="form.lyricists"
-                multiple
-                filterable
-                remote
-                allow-create
-                default-first-option
-                :value-key="'userId'"
-                :remote-method="searchLyricistsList"
-                :loading="lyricistsLoading"
-                placeholder="请搜索选择"
-                class="w40"
-              >
-                <el-option
-                  v-for="(item,index) in lyricistsList"
-                  :key="index"
-                  :label="item.stageName"
-                  :value="item"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item v-if="form.type == 1 || form.type == 3" label="曲作者：" prop="composers">
-              <el-select
-                v-model="form.composers"
-                multiple
-                filterable
-                remote
-                allow-create
-                default-first-option
-                :value-key="'userId'"
-                :remote-method="searchComposersList"
-                :loading="composersLoading"
-                placeholder="请搜索选择"
-                class="w40"
-              >
-                <el-option
-                  v-for="(item,index) in composersList"
-                  :key="index"
-                  :label="item.stageName"
-                  :value="item"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item v-if="form.type == 2" label="制作人：" prop="producers">
-              <el-select
-                v-model="form.producers"
-                multiple
-                filterable
-                remote
-                allow-create
-                default-first-option
-                :value-key="'userId'"
-                :remote-method="searchProducersList"
-                :loading="producersLoading"
-                placeholder="请搜索选择"
-                class="w40"
-              >
-                <el-option
-                  v-for="(item,index) in producersList"
-                  :key="index"
-                  :label="item.stageName"
-                  :value="item"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="作品标签：" prop="tags">
-              <div class="w50">
-                <el-tag
-                  v-for="(item,index) in form.tags"
-                  :key="index"
-                  type=""
-                  :effect="'dark'"
-                >
-                  {{ item.des }}
-                </el-tag>
-                <el-button type="text" icon="el-icon-plus" @click="openDialog">添加标签</el-button>
-              </div>
-            </el-form-item>
-            <el-form-item label="速度：" prop="speed">
-              <el-tag
-                v-for="item in tagListSD"
-                :key="item.code"
-                type=""
-                :effect="form.speed == item.code ? 'dark' : 'plain'"
-                @click="form.speed = item.code"
-              >
-                {{ item.des }}
-              </el-tag>
-            </el-form-item>
-            <el-form-item label="价格：" prop="price">
-              <el-input v-model="form.price" placeholder="请输入" type="number" class="w40"></el-input>
-            </el-form-item>
-            <el-form-item v-if="form.type == 1 || form.type == 4" label="歌词：" prop="lyricContent">
-              <el-input v-model="form.lyricContent" type="textarea" :rows="4" placeholder="请输入" :resize="'none'" class="w40"></el-input>
-              <p class="ft14 c-999 ml10 lh28">支持输入普通歌词和滚动歌词</p>
-            </el-form-item>
-            <el-form-item v-if="form.type !== 4" label="音频：" prop="musicAtt">
-              <el-button type="primary" size="mini" icon="el-icon-plus" :loading="uploadLoading" @click="openFileUpload">{{ uploadName || '上传音频文件' }}</el-button>
-              <span class="ft14 c-999 ml10 lh28">支持MP3格式，文件大小不超过20MB</span>
-            </el-form-item>
-            <el-form-item>
-              <el-checkbox v-model="xuzhi"></el-checkbox>
-              <span class="ft12 ml5">我已阅读并同意平台上传<el-link type="primary" class="ft12 lh16">作品须知</el-link></span>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" :loading="loading" class="ml50 mr50" size="medium" @click="saveSubmit(0)">发布作品</el-button>
-              <el-button class="ml50" :loading="loading" size="medium" @click="saveSubmit(1)">保存为草稿</el-button>
-            </el-form-item>
-          </el-form>
-        </el-col>
       </el-row>
     </div>
     <!-- 新增/修改 弹窗 -->
@@ -148,34 +21,8 @@
       @handleConfirm="handleConfirm"
     >
       <div class="pl24 pr24 pt24 pb24">
-        <el-form :model="form" label-width="150px">
-          <el-form-item label="风格（可多选）：">
-            <el-tag
-              v-for="item in tagListFG"
-              :key="item.code"
-              type=""
-              :effect="form.tags.indexOf(item) !== -1 ? 'dark' : 'plain'"
-              @click="tagSelect(item)"
-            >
-              {{ item.des }}
-            </el-tag>
-          </el-form-item>
-          <el-form-item label="情感（可多选）：">
-            <el-tag
-              v-for="item in tagListQG"
-              :key="item.code"
-              type=""
-              :effect="form.tags.indexOf(item) !== -1 ? 'dark' : 'plain'"
-              @click="tagSelect(item)"
-            >
-              {{ item.des }}
-            </el-tag>
-          </el-form-item>
-        </el-form>
       </div>
     </mus-dialog>
-    <!-- 附件上传 -->
-    <input ref="upload-file" type="file" accept=".mp3" style="display: none" @change="uploadFileChange" />
   </div>
 </template>
 <script>
@@ -186,7 +33,7 @@ import {
   saveWork
 } from '@/api/uploadWorkes'
 export default {
-  name: 'UploadWorks',
+  name: 'Works',
   data() {
     return {
       loading: false,
@@ -254,9 +101,6 @@ export default {
     }
   },
   created() {
-    this.getTagListFG()
-    this.getTagListQG()
-    this.getTagListSD()
   },
   methods: {
     // 获取风格标签列表

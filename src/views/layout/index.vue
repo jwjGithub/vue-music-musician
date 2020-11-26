@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 13:57:24
  * @Description: 主体框架
  * @LastEditors: JWJ
- * @LastEditTime: 2020-11-20 14:29:26
+ * @LastEditTime: 2020-11-26 14:23:51
  * @FilePath: \vue-music-musician\src\views\layout\index.vue
 -->
 <template>
@@ -39,6 +39,7 @@ export default {
       navSelectName: '', // 路由选中name
       navList: [
         { title: '个人主页', icon: 'icon-musician-user', name: 'UserIndex', url: '/index' },
+        { title: '作品管理', icon: 'icon-musician-user', name: 'Works', url: '/works' },
         { title: '上传作品', icon: 'icon-musician-zpgl', name: 'UploadWorks', url: '/uploadWorks' }
       ]
     }

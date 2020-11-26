@@ -2,7 +2,7 @@
  * @Date: 2020-11-13 09:28:54
  * @Description: 路由配置
  * @LastEditors: JWJ
- * @LastEditTime: 2020-11-20 14:33:13
+ * @LastEditTime: 2020-11-26 14:22:28
  * @FilePath: \vue-music-musician\src\router\index.js
  */
 import Vue from 'vue'
@@ -21,6 +21,12 @@ const routes = [
         name: 'UserIndex',
         component: () => import('@/views/musician/user/index'),
         meta: { title: '个人主页' }
+      },
+      {
+        path: 'works',
+        name: 'Works',
+        component: () => import('@/views/musician/works/index'),
+        meta: { title: '作品管理' }
       },
       {
         path: 'uploadWorks',
