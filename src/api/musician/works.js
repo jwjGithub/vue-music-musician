@@ -1,8 +1,8 @@
 /*
  * @Date: 2020-11-30 11:40:57
  * @Description: 作品管理
- * @LastEditors: JWJ
- * @LastEditTime: 2020-11-30 11:52:01
+ * @LastEditors: jwj
+ * @LastEditTime: 2020-11-30 22:02:43
  * @FilePath: \vue-music-musician\src\api\musician\works.js
  */
 
@@ -40,10 +40,35 @@ export function getUserPushListPage(data) {
     data: data
   })
 }
-// 用户作品发布状态更新接口
-export function updateUserMusicPostStatus(id) {
+// 已下架作品查询接口
+export function getUserOffShelfListPage(data) {
   return request({
-    url: `/music/base/updateUserMusicPostStatus/${id}`,
-    method: 'post'
+    url: '/music/base/getUserOffShelfListPage',
+    method: 'post',
+    data: data
+  })
+}
+// 音乐人草稿箱列表查询接口
+export function getUserUnpublishedListPage(data) {
+  return request({
+    url: '/music/base/getUserUnpublishedListPage',
+    method: 'post',
+    data: data
+  })
+}
+// 用户作品发布状态更新接口 postStatus:发布状态 0 待发布 1 已发布 -1 删除
+export function updateUserMusicPostStatus(data) {
+  return request({
+    url: `/music/base/updateUserMusicPostStatus/${data.id}`,
+    method: 'post',
+    data: data
+  })
+}
+// 用户作品价格更新接口
+export function updateUserMusicPrice(data) {
+  return request({
+    url: `/music/base/updateUserMusicPrice/${data.id}`,
+    method: 'post',
+    data: data
   })
 }

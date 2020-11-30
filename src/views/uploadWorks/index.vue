@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
- * @LastEditors: JWJ
- * @LastEditTime: 2020-11-26 14:19:08
+ * @LastEditors: jwj
+ * @LastEditTime: 2020-11-30 21:37:20
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -145,6 +145,7 @@
       :is-show="dialogOption.show"
       :width="'800px'"
       :is-show-close="false"
+      @handleClose="dialogOption.show = false"
       @handleConfirm="handleConfirm"
     >
       <div class="pl24 pr24 pt24 pb24">
