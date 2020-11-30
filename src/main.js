@@ -1,3 +1,10 @@
+/*
+ * @Date: 2020-11-13 09:28:53
+ * @Description:
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-11-30 11:59:40
+ * @FilePath: \vue-music-musician\src\main.js
+ */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -10,6 +17,7 @@ import './permission' // permission control
 import MusHeader from '@/components/page/MusHeader'
 import MusFooter from '@/components/page/MusFooter'
 import MusDialog from '@/components/MusDialog'
+import Pagination from '@/components/Pagination'
 
 // 全局方法引入
 import { goLocation, parseTime, resetForm } from '@/utils/index'
@@ -38,6 +46,7 @@ Vue.prototype.GoWindow = function(url) {
 Vue.component('MusHeader', MusHeader)
 Vue.component('MusFooter', MusFooter)
 Vue.component('MusDialog', MusDialog)
+Vue.component('Pagination', Pagination)
 Vue.use(Element)
 new Vue({
   router,

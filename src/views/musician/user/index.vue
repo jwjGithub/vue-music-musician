@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 14:30:56
  * @Description: 主页
  * @LastEditors: JWJ
- * @LastEditTime: 2020-11-25 15:29:38
+ * @LastEditTime: 2020-11-30 11:01:59
  * @FilePath: \vue-music-musician\src\views\musician\user\index.vue
 -->
 <template>
@@ -205,23 +205,23 @@ export default {
         align-items:center;
         justify-content: space-between;
         .icon-musician-fb{
-          width: 40px;
-          height: 32px;
+          width: 60px;
+          height: 48px;
           background-image:url('~@/assets/images/musician/icon-musician-fb.png');
         }
         .icon-musician-ysc{
-          width: 33px;
-          height: 36px;
+          width: 49px;
+          height: 54px;
           background-image:url('~@/assets/images/musician/icon-musician-ysc.png');
         }
         .icon-musician-zps{
-          width: 32px;
-          height: 32px;
+          width: 48px;
+          height: 48px;
           background-image:url('~@/assets/images/musician/icon-musician-zps.png');
         }
         .icon-musician-jyze{
-          width: 35px;
-          height: 33px;
+          width: 52px;
+          height: 49px;
           background-image:url('~@/assets/images/musician/icon-musician-jyze.png');
         }
         >p{

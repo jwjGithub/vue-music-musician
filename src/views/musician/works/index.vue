@@ -2,13 +2,56 @@
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
  * @LastEditors: JWJ
- * @LastEditTime: 2020-11-26 14:21:15
+ * @LastEditTime: 2020-11-30 13:34:52
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
   <div class="main upload-workes">
     <div class="main-content">
       <el-row>
+        <el-col :span="24">
+          <div class="mt40 text-center">
+            <el-button-group>
+              <el-button type="primary">全部作品</el-button>
+              <el-button type="primary" plain>待售作品</el-button>
+              <el-button type="primary" plain>已售作品</el-button>
+              <el-button type="primary" plain>优先推送中</el-button>
+              <el-button type="primary" plain>下架作品</el-button>
+              <el-button type="primary" plain>草稿箱</el-button>
+            </el-button-group>
+          </div>
+        </el-col>
+        <el-col :span="24" class="pt40 pb20 pl20 pr20">
+          <el-table
+            v-loading="loading"
+            :data="dataList"
+            style="width: 100%"
+          >
+            <el-table-column type="selection" width="55" align="center"></el-table-column>
+            <el-table-column prop="title" min-width="150" label="名称"></el-table-column>
+            <el-table-column prop="type" min-width="150" label="分类">
+              <template slot-scope="scope">
+                <span v-if="scope.row.type == 1">词曲</span>
+                <span v-if="scope.row.type == 2">Beat/BGM</span>
+                <span v-if="scope.row.type == 3">作曲</span>
+                <span v-if="scope.row.type == 4">作词</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="optionalTypeDes" min-width="150" label="状态"></el-table-column>
+            <el-table-column prop="creatorName" min-width="150" label="风格标签"></el-table-column>
+            <el-table-column prop="" min-width="150" label="报价"></el-table-column>
+            <el-table-column prop="createdTime" min-width="150" label="发布日期"></el-table-column>
+            <el-table-column prop="expiredTime" min-width="150" label="预留状态"></el-table-column>
+            <el-table-column prop="expiredTime" min-width="150" label="操作"></el-table-column>
+          </el-table>
+          <pagination
+            v-show="total>0"
+            :total="Number(total)"
+            :page.sync="queryForm.page"
+            :limit.sync="queryForm.limit"
+            @pagination="getList"
+          />
+        </el-col>
       </el-row>
     </div>
     <!-- 新增/修改 弹窗 -->
@@ -32,66 +75,24 @@ import {
   uploadMusic,
   saveWork
 } from '@/api/uploadWorkes'
+import {
+  getUserAllMusicListPage,
+  getUserOnSaleListPage,
+  getUserSoldListPage,
+  getUserPushListPage
+} from '@/api/musician/works'
 export default {
   name: 'Works',
   data() {
     return {
+      total: 0,
       loading: false,
-      uploadLoading: false, // 上传loading
-      uploadName: '', // 上传名称
-      xuzhi: false, // 须知
-      lyricistsList: [], // 词作者列表
-      lyricistsLoading: false, // 词作者loading
-      composersList: [], // 曲作者列表
-      composersLoading: false, // 曲作者loading
-      producersList: [], // 制作人列表
-      producersLoading: false, // 制作人loading
-      tagListFG: [], // 风格标签列表
-      tagListQG: [], // 情感标签列表
-      tagListSD: [], // 速度标签列表
-      form: {
-        type: 1, // 作品类型(1：词曲，2：BEATBGM，3：作曲，4：作词)
-        musicAtt: '', // 音乐作品附件id
-        duration: '', // 时长
-        musicWatermarkAtt: '', // 带水印音乐作品附件id
-        title: '', // 作品名称
-        composers: [], // 曲作者
-        lyricists: [], // 词作者
-        producers: [], // 制作人
-        price: '', // 报价
-        lyricContent: '', // 歌词文本
-        tags: [], // 标签
-        speed: '', // 速度
-        postType: '' // 提交类型(save:保存到草稿箱,post:发布)
-      },
-      rules: {
-        title: [
-          { required: true, message: '请输入作品名称', trigger: 'blur' }
-        ],
-        composers: [
-          { required: true, message: '请选择曲作者', trigger: ['blur', 'change'] }
-        ],
-        lyricists: [
-          { required: true, message: '请选择词作者', trigger: ['blur', 'change'] }
-        ],
-        producers: [
-          { required: true, message: '请选择制作人', trigger: ['blur', 'change'] }
-        ],
-        tags: [
-          { required: true, message: '请选择标签', trigger: ['change'] }
-        ],
-        speed: [
-          { required: true, message: '请选择速度', trigger: ['change'] }
-        ],
-        price: [
-          { required: true, message: '请输入价格', trigger: 'blur' }
-        ],
-        lyricContent: [
-          { required: true, message: '请输入歌词', trigger: 'blur' }
-        ],
-        musicAtt: [
-          { required: true, message: '请上传音频文件', trigger: ['change'] }
-        ]
+      dataList: [],
+      queryForm: {
+        type: '', // 分类 1词曲2Beat/Bgm 3作曲 4作词
+        status: '', // 出售状态 0 待售 1出售 2交易中 3已下架
+        page: 1, // 当前页
+        limit: 20 // 每页条数
       },
       // 默认弹窗对象
       dialogOption: {
@@ -101,8 +102,30 @@ export default {
     }
   },
   created() {
+    this.getList('全部作品')
   },
   methods: {
+    getList(type) {
+      switch (type) {
+        case '全部作品':
+          this.getUserAllMusicListPage()
+          break
+
+        default:
+          break
+      }
+    },
+    // 查询全部作品
+    getUserAllMusicListPage() {
+      this.loading = true
+      getUserAllMusicListPage(this.queryForm).then(res => {
+        this.dataList = res.data || []
+        this.total = res.count || 0
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     // 获取风格标签列表
     getTagListFG() {
       getTagsByType({ type: 1 }).then(res => {

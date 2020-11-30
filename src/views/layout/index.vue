@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 13:57:24
  * @Description: 主体框架
  * @LastEditors: JWJ
- * @LastEditTime: 2020-11-26 14:23:51
+ * @LastEditTime: 2020-11-30 11:10:44
  * @FilePath: \vue-music-musician\src\views\layout\index.vue
 -->
 <template>
@@ -95,8 +95,8 @@ export default {
                 margin-bottom:1px;
                 cursor: pointer;
                 >.list-icon{
-                  padding-left:56px;
-                  padding-right:10px;
+                  padding-left:46px;
+                  padding-right:16px;
                 }
                 >.title{
                   flex:1;
