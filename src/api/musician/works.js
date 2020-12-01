@@ -2,7 +2,7 @@
  * @Date: 2020-11-30 11:40:57
  * @Description: 作品管理
  * @LastEditors: jwj
- * @LastEditTime: 2020-11-30 22:02:43
+ * @LastEditTime: 2020-12-01 22:37:02
  * @FilePath: \vue-music-musician\src\api\musician\works.js
  */
 
@@ -68,6 +68,14 @@ export function updateUserMusicPostStatus(data) {
 export function updateUserMusicPrice(data) {
   return request({
     url: `/music/base/updateUserMusicPrice/${data.id}`,
+    method: 'post',
+    data: data
+  })
+}
+// 作品上下架接口
+export function updateUserMusicSaleStatus(data) {
+  return request({
+    url: `music/base/updateUserMusicSaleStatus/${data.id}`,
     method: 'post',
     data: data
   })

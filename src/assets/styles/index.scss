@@ -20,3 +20,11 @@ body {
 .c-999{
   color:#999;
 }
+.query-item{
+  display:flex;
+  padding:20px;
+  >.left-query{
+    flex:1;
+    overflow: hidden;
+  }
+}

@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
- * @LastEditors: JWJ
- * @LastEditTime: 2020-12-01 10:09:58
+ * @LastEditors: jwj
+ * @LastEditTime: 2020-12-01 23:17:48
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -10,7 +10,7 @@
     <div class="main-content">
       <el-row>
         <el-col :span="24">
-          <div class="mt40 text-center">
+          <div class="mt40 ml20 mb20">
             <el-button-group>
               <el-button type="primary" :plain="activeListName != '全部作品'" @click="selectActiveClick('全部作品')">全部作品</el-button>
               <el-button type="primary" :plain="activeListName != '待售作品'" @click="selectActiveClick('待售作品')">待售作品</el-button>
@@ -25,9 +25,15 @@
           <el-form ref="queryForm" label-width="100px" :model="queryForm" :inline="true">
             <div class="query-item">
               <div class="left-query">
-                <el-form-item label="公司名称" prop="com_name">
 
-                  <el-input v-model="queryForm.com_name" class="w24"></el-input>
+                <el-form-item label="分类：" prop="type">
+                  <el-select v-model="queryForm.type" clearable placeholder="" class="w24">
+                    <el-option value="" label="全部" />
+                    <el-option :value="1" label="词曲" />
+                    <el-option :value="2" label="Beat/BGM" />
+                    <el-option :value="3" label="作曲" />
+                    <el-option :value="4" label="作词" />
+                  </el-select>
                 </el-form-item>
               </div>
               <div class="right-btn">
@@ -41,7 +47,7 @@
             </div>
           </el-form>
         </el-col>
-        <el-col :span="24" class="pt40 pb20 pl20 pr20">
+        <el-col :span="24" class=" pb20 pl20 pr20">
           <el-table
             v-loading="loading"
             :data="dataList"
@@ -49,8 +55,8 @@
           >
             <el-table-column type="selection" width="55" align="center"></el-table-column>
             <el-table-column type="index" width="55" align="center"></el-table-column>
-            <el-table-column prop="title" min-width="150" label="名称"></el-table-column>
-            <el-table-column prop="typeDesc" min-width="80" label="分类">
+            <el-table-column prop="title" min-width="120" label="名称"></el-table-column>
+            <el-table-column prop="typeDesc" min-width="100" label="分类">
               <!-- <template slot-scope="scope">
                 <span v-if="scope.row.type == 1">词曲</span>
                 <span v-if="scope.row.type == 2">Beat/BGM</span>
@@ -66,7 +72,7 @@
                 <span v-if="scope.row.status == 3">已下架</span>
               </template> -->
             </el-table-column>
-            <el-table-column prop="" min-width="150" label="风格标签"></el-table-column>
+            <el-table-column prop="stypeTagsDesc" min-width="120" label="风格标签" :show-overflow-tooltip="true"></el-table-column>
             <el-table-column prop="price" min-width="100" label="报价">
               <template slot-scope="scope">
                 <span>{{ scope.row.price }}</span>
@@ -74,15 +80,24 @@
               </template>
             </el-table-column>
             <el-table-column prop="createdTime" min-width="180" label="发布日期"></el-table-column>
-            <el-table-column prop="" min-width="150" label="预留状态"></el-table-column>
             <el-table-column label="操作" fixed="right" width="180">
               <template slot-scope="scope">
                 <!-- <el-button v-if="scope.row.status === 0" size="mini" type="text" @click="openEdit(scope.row)">修改截止日期</el-button>
                 <el-button v-if="scope.row.status === 0" size="mini" type="text" class="c-red" @click="openZuoFei(scope.row)">关闭</el-button>
                 <el-button v-if="scope.row.status === 1" size="mini" type="text" @click="openEditPage(scope.row)">编辑</el-button>
                 <el-button v-if="scope.row.status === 2" size="mini" type="text" @click="openFaBu(scope.row)">重新发布</el-button> -->
-                <el-button v-if="scope.row.status !== 3" size="mini" type="text" @click="openXiaJia(1,scope.row)">下架</el-button>
-                <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
+                <template v-if="scope.row.status == 0">
+                  <el-button size="mini" type="text">推广</el-button>
+                  <el-button size="mini" type="text">编辑</el-button>
+                  <el-button size="mini" type="text" @click="openXiaJia(1,3,scope.row)">下架</el-button>
+                  <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
+                </template>
+                <template v-if="scope.row.status == 3">
+                  <el-button size="mini" type="text">编辑</el-button>
+                  <el-button size="mini" type="text" @click="openXiaJia(1,0,scope.row)">重新上架</el-button>
+                  <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
+                </template>
+                <el-button v-if="scope.row.isReservation == 1" size="mini" type="text">预留</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -142,6 +157,7 @@ import {
   getUserOffShelfListPage,
   getUserUnpublishedListPage,
   updateUserMusicPostStatus,
+  updateUserMusicSaleStatus,
   updateUserMusicPrice
 } from '@/api/musician/works'
 export default {
@@ -273,18 +289,20 @@ export default {
       })
     },
     // 打开下架 type:1 单个 type:2 批量
-    openXiaJia(type, row) {
+    openXiaJia(type, status, row) {
       let title = type === 1 ? '单个' : '批量'
-      this.$confirm('此操作将' + title + '下架作品, 是否继续?', '作品下架', {
+      let statusTitle = status === 3 ? '下架' : '重新上架'
+      this.$confirm('此操作将' + title + statusTitle + '作品, 是否继续?', '作品' + statusTitle, {
         cancelButtonText: '取消',
         confirmButtonText: '确定',
         type: 'warning'
       }).then(() => {
         let json = {
           id: type === 1 ? row.id : this.selectOption.ids.join(','),
-          status: 3
+          status: status
         }
-        updateUserMusicPostStatus(json).then(res => {
+        // 单个上下架接口
+        updateUserMusicSaleStatus(json).then(res => {
           this.$notify.success({
             title: '操作成功'
           })
