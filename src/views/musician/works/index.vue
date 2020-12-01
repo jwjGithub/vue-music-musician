@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
- * @LastEditors: jwj
- * @LastEditTime: 2020-11-30 22:04:40
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-12-01 10:09:58
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -20,6 +20,26 @@
               <el-button type="primary" :plain="activeListName != '草稿箱'" @click="selectActiveClick('草稿箱')">草稿箱</el-button>
             </el-button-group>
           </div>
+        </el-col>
+        <el-col>
+          <el-form ref="queryForm" label-width="100px" :model="queryForm" :inline="true">
+            <div class="query-item">
+              <div class="left-query">
+                <el-form-item label="公司名称" prop="com_name">
+
+                  <el-input v-model="queryForm.com_name" class="w24"></el-input>
+                </el-form-item>
+              </div>
+              <div class="right-btn">
+                <el-form-item>
+                  <el-button type="primary" :loading="loading" @click="getList">
+                    <i class="el-icon-search"></i>
+                    <span>搜索</span>
+                  </el-button>
+                </el-form-item>
+              </div>
+            </div>
+          </el-form>
         </el-col>
         <el-col :span="24" class="pt40 pb20 pl20 pr20">
           <el-table
@@ -326,165 +346,6 @@ export default {
       }).catch(() => {
         this.dialogPrice.loading = false
       })
-    },
-    // 获取风格标签列表
-    getTagListFG() {
-      getTagsByType({ type: 1 }).then(res => {
-        let list = res.data || []
-        list.forEach(item => {
-          item.type = 1
-        })
-        this.tagListFG = list
-      })
-    },
-    // 获取情感标签列表
-    getTagListQG() {
-      getTagsByType({ type: 2 }).then(res => {
-        let list = res.data || []
-        list.forEach(item => {
-          item.type = 2
-        })
-        this.tagListQG = list
-      })
-    },
-    // 获取速度标签列表
-    getTagListSD() {
-      getTagsByType({ type: 3 }).then(res => {
-        this.tagListSD = res.data || []
-      })
-    },
-    // 词作者搜索
-    searchLyricistsList(val) {
-      this.lyricistsLoading = true
-      searchMusicians({ stageName: val }).then(res => {
-        this.lyricistsLoading = false
-        this.lyricistsList = res.data || []
-      }).catch(() => {
-        this.lyricistsLoading = false
-      })
-    },
-    // 曲作者搜索
-    searchComposersList(val) {
-      this.composersLoading = true
-      searchMusicians({ stageName: val }).then(res => {
-        this.composersLoading = false
-        this.composersList = res.data || []
-      }).catch(() => {
-        this.composersLoading = false
-      })
-    },
-    // 制作人搜索
-    searchProducersList(val) {
-      this.producersLoading = true
-      searchMusicians({ stageName: val }).then(res => {
-        this.producersLoading = false
-        this.producersList = res.data || []
-      }).catch(() => {
-        this.producersLoading = false
-      })
-    },
-    // 打开标签选择
-    openDialog() {
-      this.dialogOption = {
-        title: '添加标签',
-        show: true
-      }
-    },
-    // 标签选择
-    tagSelect(row) {
-      // 添加
-      if (this.form.tags.indexOf(row) === -1) {
-        this.form.tags.push(row)
-      } else { // 删除
-        this.form.tags.splice(this.form.tags.indexOf(row), 1)
-      }
-      this.$forceUpdate()
-    },
-    // 标签选择回调
-    handleConfirm() {
-      this.dialogOption.show = false
-    },
-    // 用户过滤 -
-    setUserFilter(data) {
-      let list = JSON.parse(JSON.stringify(data))
-      let arr = []
-      list.forEach(item => {
-        if (typeof item === 'string') {
-          arr.push({
-            authorName: item,
-            // stageName: item,
-            userId: null
-          })
-        } else {
-          arr.push({
-            authorName: item.stageName,
-            userId: item.userId
-          })
-          // arr.push(item)
-        }
-      })
-      return arr
-    },
-    // 保存
-    saveSubmit(type) {
-      this.$refs['form'].validate((valid) => {
-        if (valid) {
-          if (!this.xuzhi) {
-            this.$message.error('请勾选阅读须知')
-            return false
-          }
-          let json = JSON.parse(JSON.stringify(this.form))
-          json.postType = type === 0 ? 'post' : 'save'
-          json.composers = this.setUserFilter(json.composers)
-          json.lyricists = this.setUserFilter(json.lyricists)
-          json.producers = this.setUserFilter(json.producers)
-          this.loading = true
-          saveWork(json).then(res => {
-            this.loading = false
-            this.$message.success('提交成功')
-            this.resetForm('form')
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          return false
-        }
-      })
-    },
-    // 打开附件上传
-    openFileUpload() {
-      this.$refs['upload-file'].click()
-    },
-    // 文件选择事件
-    uploadFileChange() {
-      let fileObj = this.$refs['upload-file']
-      let files = fileObj.files
-      if (files.length > 0) {
-        let file = files[0]
-        const reg = '.*\\.(mp3|MP3)'
-        if (file.name.match(reg) == null) {
-          this.$notify.error({ title: '请选择格式为“mp3”的文件' })
-          return false
-        }
-        if (file.size > 1024 * 1024 * 20) {
-          this.$notify.error({ title: '对不起，文件不能大于20M，请重新上传' })
-          return false
-        }
-        let formData = new FormData()
-        console.log(file, '-file')
-        formData.append('musicFile', file)
-        this.uploadLoading = true
-        uploadMusic(formData).then(res => {
-          let data = res.data || {}
-          this.form.duration = data.duration
-          this.form.musicAtt = data.musicAtt
-          this.form.musicWatermarkAtt = data.musicWatermarkAtt
-          this.uploadLoading = false
-          this.uploadName = file.name
-        }).catch(() => {
-          this.uploadLoading = false
-        })
-      }
     }
   }
 }
