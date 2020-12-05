@@ -2,7 +2,7 @@
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
  * @LastEditors: jwj
- * @LastEditTime: 2020-12-01 23:17:48
+ * @LastEditTime: 2020-12-05 20:48:32
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -80,7 +80,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="createdTime" min-width="180" label="发布日期"></el-table-column>
-            <el-table-column label="操作" fixed="right" width="180">
+            <el-table-column label="操作" fixed="right" width="200">
               <template slot-scope="scope">
                 <!-- <el-button v-if="scope.row.status === 0" size="mini" type="text" @click="openEdit(scope.row)">修改截止日期</el-button>
                 <el-button v-if="scope.row.status === 0" size="mini" type="text" class="c-red" @click="openZuoFei(scope.row)">关闭</el-button>
@@ -97,7 +97,17 @@
                   <el-button size="mini" type="text" @click="openXiaJia(1,0,scope.row)">重新上架</el-button>
                   <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
                 </template>
-                <el-button v-if="scope.row.isReservation == 1" size="mini" type="text">预留</el-button>
+                <el-popover
+                  placement="bottom"
+                  width="200"
+                  trigger="click"
+                  @show="popoverShowCallback(scope.row)"
+                >
+                  <div>
+                    <p v-for="(item,index) in yuLiuList" :key="index" class="lh28">{{ index + 1 }}.{{ item.companyName }}</p>
+                  </div>
+                  <el-button v-if="scope.row.isReservation == 1" slot="reference" class="ml10" size="mini" type="text">预留</el-button>
+                </el-popover>
               </template>
             </el-table-column>
           </el-table>
@@ -112,7 +122,7 @@
       </el-row>
     </div>
     <!-- 新增/修改 弹窗 -->
-    <mus-dialog
+    <!-- <mus-dialog
       :title="dialogOption.title"
       :loading="dialogOption.loading"
       :is-show="dialogOption.show"
@@ -122,7 +132,7 @@
     >
       <div class="pl24 pr24 pt24 pb24">
       </div>
-    </mus-dialog>
+    </mus-dialog> -->
     <!-- 修改价格 弹窗 -->
     <mus-dialog
       title="修改价格"
@@ -158,7 +168,8 @@ import {
   getUserUnpublishedListPage,
   updateUserMusicPostStatus,
   updateUserMusicSaleStatus,
-  updateUserMusicPrice
+  updateUserMusicPrice,
+  getOptionalComInfo
 } from '@/api/musician/works'
 export default {
   name: 'Works',
@@ -166,8 +177,10 @@ export default {
     return {
       total: 0,
       loading: false,
+      popoverShow: false,
       activeListName: '全部作品',
       dataList: [],
+      yuLiuList: [], // 预留公司列表
       queryForm: {
         type: '', // 分类 1词曲2Beat/Bgm 3作曲 4作词
         status: '', // 出售状态 0 待售 1出售 2交易中 3已下架
@@ -364,6 +377,13 @@ export default {
       }).catch(() => {
         this.dialogPrice.loading = false
       })
+    },
+    // 预留显示公司回调
+    popoverShowCallback(row) {
+      getOptionalComInfo({ id: row.id }).then(res => {
+        this.yuLiuList = res.data || []
+      })
+      console.log(row, 'rrrr')
     }
   }
 }

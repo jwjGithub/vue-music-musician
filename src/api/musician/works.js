@@ -2,7 +2,7 @@
  * @Date: 2020-11-30 11:40:57
  * @Description: 作品管理
  * @LastEditors: jwj
- * @LastEditTime: 2020-12-01 22:37:02
+ * @LastEditTime: 2020-12-05 20:23:57
  * @FilePath: \vue-music-musician\src\api\musician\works.js
  */
 
@@ -76,6 +76,14 @@ export function updateUserMusicPrice(data) {
 export function updateUserMusicSaleStatus(data) {
   return request({
     url: `music/base/updateUserMusicSaleStatus/${data.id}`,
+    method: 'post',
+    data: data
+  })
+}
+// 查询作品预留公司信息接口
+export function getOptionalComInfo(data) {
+  return request({
+    url: `/music/base/getOptionalComInfo/${data.id}`,
     method: 'post',
     data: data
   })

@@ -1,8 +1,8 @@
 /*
  * @Date: 2020-11-25 13:48:28
  * @Description: 个人中心
- * @LastEditors: JWJ
- * @LastEditTime: 2020-11-25 13:49:42
+ * @LastEditors: jwj
+ * @LastEditTime: 2020-12-05 21:33:57
  * @FilePath: \vue-music-musician\src\api\musician\user.js
  */
 import request from '@/utils/request'
@@ -19,6 +19,14 @@ export function getUserWorkCountInfo(data) {
 export function getUserWorkCountHisInfo(data) {
   return request({
     url: '/usercenter/userWorkCountHisInfo',
+    method: 'post',
+    data: data
+  })
+}
+// 修改个人信息
+export function updateMusicianInfo(data) {
+  return request({
+    url: '/usercenter/updateMusicianInfo',
     method: 'post',
     data: data
   })
