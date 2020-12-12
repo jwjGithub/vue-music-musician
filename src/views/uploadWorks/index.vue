@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
  * @LastEditors: jwj
- * @LastEditTime: 2020-11-30 21:37:20
+ * @LastEditTime: 2020-12-12 13:22:52
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -105,15 +105,17 @@
               </div>
             </el-form-item>
             <el-form-item label="速度：" prop="speed">
-              <el-tag
-                v-for="item in tagListSD"
-                :key="item.code"
-                type=""
-                :effect="form.speed == item.code ? 'dark' : 'plain'"
-                @click="form.speed = item.code"
-              >
-                {{ item.des }}
-              </el-tag>
+              <div>
+                <el-tag
+                  v-for="item in tagListSD"
+                  :key="item.code"
+                  type=""
+                  :effect="form.speed == item.code ? 'dark' : 'plain'"
+                  @click="form.speed = item.code"
+                >
+                  {{ item.des }}
+                </el-tag>
+              </div>
             </el-form-item>
             <el-form-item label="价格：" prop="price">
               <el-input v-model="form.price" placeholder="请输入" type="number" class="w40"></el-input>
@@ -327,7 +329,11 @@ export default {
     tagSelect(row) {
       // 添加
       if (this.form.tags.indexOf(row) === -1) {
-        this.form.tags.push(row)
+        if (this.form.tags.length >= 5) {
+          this.$message.error('最多选择五个标签')
+        } else {
+          this.form.tags.push(row)
+        }
       } else { // 删除
         this.form.tags.splice(this.form.tags.indexOf(row), 1)
       }

@@ -2,11 +2,11 @@
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
  * @LastEditors: jwj
- * @LastEditTime: 2020-12-05 20:48:32
+ * @LastEditTime: 2020-12-12 13:51:28
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
-  <div class="main upload-workes">
+  <div class="main musician-workes">
     <div class="main-content">
       <el-row>
         <el-col :span="24">
@@ -51,6 +51,7 @@
           <el-table
             v-loading="loading"
             :data="dataList"
+            :row-class-name="setRowClassName"
             style="width: 100%"
           >
             <el-table-column type="selection" width="55" align="center"></el-table-column>
@@ -72,7 +73,13 @@
                 <span v-if="scope.row.status == 3">已下架</span>
               </template> -->
             </el-table-column>
-            <el-table-column prop="stypeTagsDesc" min-width="120" label="风格标签" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="stypeTagsDesc" min-width="120" label="风格标签" :show-overflow-tooltip="true">
+              <template slot-scope="scope">
+                <span>{{ scope.row.emotionTagsDesc }}</span>
+                <span v-if="scope.row.emotionTagsDesc">,</span>
+                <span>{{ scope.row.emotionTagsDesc }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="price" min-width="100" label="报价">
               <template slot-scope="scope">
                 <span>{{ scope.row.price }}</span>
@@ -301,6 +308,13 @@ export default {
         this.loading = false
       })
     },
+    // 行设置动态class
+    setRowClassName(row) {
+      console.log(row, '--')
+      if (row.row.status === 3) {
+        return 'mus-table-row-status-3'
+      }
+    },
     // 打开下架 type:1 单个 type:2 批量
     openXiaJia(type, status, row) {
       let title = type === 1 ? '单个' : '批量'
@@ -396,4 +410,17 @@ export default {
     margin-bottom:10px;
   }
 }
+</style>
+<style lang="scss">
+.musician-workes{
+  .mus-table-row-status-3{
+    background-color:#ddd;
+    &.hover-row{
+      >td{
+        background-color:#ddd;
+      }
+    }
+  }
+}
+
 </style>

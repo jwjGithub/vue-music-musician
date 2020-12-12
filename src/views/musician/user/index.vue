@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 14:30:56
  * @Description: 主页
  * @LastEditors: jwj
- * @LastEditTime: 2020-12-05 21:52:20
+ * @LastEditTime: 2020-12-12 14:11:20
  * @FilePath: \vue-music-musician\src\views\musician\user\index.vue
 -->
 <template>
@@ -84,6 +84,7 @@
           <el-form-item label="上传头像：" prop="profile">
             <el-upload
               class="avatar-uploader w24"
+              accept="image/*"
               :action="baseURL + '/sys/user/uploadImg'"
               :headers="{'token': getToken()}"
               :before-upload="handleBeforeUpload"
@@ -266,7 +267,7 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.dialogOption.loading = true
-          let json = this.form
+          let json = JSON.parse(JSON.stringify(this.form))
           json.profession = json.profession.join(',')
           updateMusicianInfo(json).then(res => {
             this.$notify.success({
