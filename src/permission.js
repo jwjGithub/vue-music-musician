@@ -10,6 +10,7 @@ import store from './store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken, setToken } from '@/utils/auth'
+import { goMusic } from '@/utils/index'
 import getPageTitle from '@/utils/get-page-title'
 NProgress.configure({ showSpinner: false })
 
@@ -45,7 +46,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // 否则全部重定向到曲库
-      window.location = 'http://47.94.21.246:9081/#/?logOut=Y'
+      goMusic('logOut=Y')
       // next()
       // next(`/login?redirect=${to.path}`)
       NProgress.done()

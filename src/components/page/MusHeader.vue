@@ -232,7 +232,7 @@ export default {
     },
     logOut() {
       this.$store.dispatch('FedLogOut').then(() => {
-        location.reload()
+        this.goMusic('logOut=Y')
       })
     },
     // 登录提交

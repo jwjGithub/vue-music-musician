@@ -1,8 +1,8 @@
 /*
  * @Date: 2020-11-13 09:28:53
  * @Description:
- * @LastEditors: JWJ
- * @LastEditTime: 2020-11-30 11:59:40
+ * @LastEditors: jwj
+ * @LastEditTime: 2020-12-14 23:32:17
  * @FilePath: \vue-music-musician\src\main.js
  */
 import Vue from 'vue'
@@ -20,7 +20,7 @@ import MusDialog from '@/components/MusDialog'
 import Pagination from '@/components/Pagination'
 
 // 全局方法引入
-import { goLocation, parseTime, resetForm } from '@/utils/index'
+import { goLocation, parseTime, resetForm, goMusic } from '@/utils/index'
 import { getToken } from '@/utils/auth'
 Vue.prototype.baseURL = process.env.VUE_APP_BASE_API
 Vue.config.productionTip = false
@@ -30,6 +30,7 @@ Vue.prototype.goLocation = goLocation
 Vue.prototype.parseTime = parseTime
 Vue.prototype.resetForm = resetForm
 Vue.prototype.getToken = getToken
+Vue.prototype.goMusic = goMusic
 // 路由跳转
 Vue.prototype.Go = function(url, query) {
   router.push({
