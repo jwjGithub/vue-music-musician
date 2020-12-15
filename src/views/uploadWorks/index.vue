@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
- * @LastEditors: JWJ
- * @LastEditTime: 2020-12-15 14:17:56
+ * @LastEditors: jwj
+ * @LastEditTime: 2020-12-15 22:17:21
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -104,7 +104,7 @@
                 <el-button type="text" icon="el-icon-plus" @click="openDialog">添加标签</el-button>
               </div>
             </el-form-item>
-            <el-form-item label="速度：" prop="speed">
+            <el-form-item v-show="form.type != 4" label="速度：" prop="speed">
               <div>
                 <el-tag
                   v-for="item in tagListSD"
