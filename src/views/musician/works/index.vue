@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
- * @LastEditors: jwj
- * @LastEditTime: 2020-12-12 13:51:28
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-12-15 14:27:44
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -73,13 +73,8 @@
                 <span v-if="scope.row.status == 3">已下架</span>
               </template> -->
             </el-table-column>
-            <el-table-column prop="stypeTagsDesc" min-width="120" label="风格标签" :show-overflow-tooltip="true">
-              <template slot-scope="scope">
-                <span>{{ scope.row.emotionTagsDesc }}</span>
-                <span v-if="scope.row.emotionTagsDesc">,</span>
-                <span>{{ scope.row.emotionTagsDesc }}</span>
-              </template>
-            </el-table-column>
+            <el-table-column prop="stypeTagsDesc" min-width="120" label="风格标签" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="emotionTagsDesc" min-width="120" label="情感标签" :show-overflow-tooltip="true"></el-table-column>
             <el-table-column prop="price" min-width="100" label="报价">
               <template slot-scope="scope">
                 <span>{{ scope.row.price }}</span>
@@ -93,13 +88,17 @@
                 <el-button v-if="scope.row.status === 0" size="mini" type="text" class="c-red" @click="openZuoFei(scope.row)">关闭</el-button>
                 <el-button v-if="scope.row.status === 1" size="mini" type="text" @click="openEditPage(scope.row)">编辑</el-button>
                 <el-button v-if="scope.row.status === 2" size="mini" type="text" @click="openFaBu(scope.row)">重新发布</el-button> -->
-                <template v-if="scope.row.status == 0">
+                <template v-if="scope.row.postStatus == 0">
+                  <el-button size="mini" type="text">编辑</el-button>
+                  <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
+                </template>
+                <template v-if="scope.row.status == 0 && scope.row.postStatus == 1">
                   <el-button size="mini" type="text">推广</el-button>
                   <el-button size="mini" type="text">编辑</el-button>
                   <el-button size="mini" type="text" @click="openXiaJia(1,3,scope.row)">下架</el-button>
                   <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
                 </template>
-                <template v-if="scope.row.status == 3">
+                <template v-if="scope.row.status == 3 && scope.row.postStatus == 2">
                   <el-button size="mini" type="text">编辑</el-button>
                   <el-button size="mini" type="text" @click="openXiaJia(1,0,scope.row)">重新上架</el-button>
                   <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>

@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-20 14:30:56
  * @Description: 主页
- * @LastEditors: jwj
- * @LastEditTime: 2020-12-12 14:11:20
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-12-15 13:52:18
  * @FilePath: \vue-music-musician\src\views\musician\user\index.vue
 -->
 <template>
@@ -12,7 +12,7 @@
         <el-col :span="24" class="ptx30 pr40 plx50">
           <div class="top-info">
             <div class="head-img">
-              <img src="@/assets/images/musician/default-head.png" />
+              <img :src="$store.getters.userInfo.profileUrl || defaultHead" />
             </div>
             <div class="info-texts">
               <div class="info-title">
@@ -136,6 +136,7 @@ export default {
   },
   data() {
     return {
+      defaultHead: require('@/assets/images/musician/default-head.png'),
       // echarts 参数
       echartsOption: {
         xAxis: {
@@ -253,11 +254,11 @@ export default {
       let userInfo = this.$store.getters.userInfo
       this.dialogOption = {
         title: '编辑个人资料',
-        imgUrl: '',
+        imgUrl: userInfo.profileUrl || '',
         show: true
       }
       this.form = {
-        profile: '', // 头像id
+        profile: userInfo.profile || '', // 头像id
         stageName: userInfo.stageName, // 艺名
         profession: userInfo.profession && userInfo.profession.split(','), // 工种
         introduction: userInfo.introduction // 个人简介

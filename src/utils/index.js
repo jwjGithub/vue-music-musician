@@ -99,6 +99,12 @@ export function resetForm(refName) {
     this.$refs[refName].resetFields()
   }
 }
+// 表单清除验证
+export function clearValidate(refName) {
+  if (this.$refs[refName]) {
+    this.$refs[refName].clearValidate()
+  }
+}
 
 // 计算字符串长度 中文+2 英文+1
 export function strlen(str) {
