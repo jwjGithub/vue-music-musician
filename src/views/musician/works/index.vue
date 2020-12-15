@@ -2,7 +2,7 @@
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
  * @LastEditors: JWJ
- * @LastEditTime: 2020-12-15 14:27:44
+ * @LastEditTime: 2020-12-15 14:46:15
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -98,7 +98,7 @@
                   <el-button size="mini" type="text" @click="openXiaJia(1,3,scope.row)">下架</el-button>
                   <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
                 </template>
-                <template v-if="scope.row.status == 3 && scope.row.postStatus == 2">
+                <template v-if="scope.row.status == 3">
                   <el-button size="mini" type="text">编辑</el-button>
                   <el-button size="mini" type="text" @click="openXiaJia(1,0,scope.row)">重新上架</el-button>
                   <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
