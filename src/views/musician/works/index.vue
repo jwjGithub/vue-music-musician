@@ -2,7 +2,7 @@
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
  * @LastEditors: JWJ
- * @LastEditTime: 2020-12-15 14:46:15
+ * @LastEditTime: 2020-12-21 14:36:49
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -73,8 +73,12 @@
                 <span v-if="scope.row.status == 3">已下架</span>
               </template> -->
             </el-table-column>
-            <el-table-column prop="stypeTagsDesc" min-width="120" label="风格标签" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="emotionTagsDesc" min-width="120" label="情感标签" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="stypeTagsDesc" min-width="150" label="作品标签" :show-overflow-tooltip="true">
+              <template slot-scope="scope">
+                <span v-if="scope.row.stypeTagsDesc">{{ scope.row.stypeTagsDesc }},</span>
+                <span>{{ scope.row.emotionTagsDesc }}</span>
+              </template>
+            </el-table-column>
             <el-table-column prop="price" min-width="100" label="报价">
               <template slot-scope="scope">
                 <span>{{ scope.row.price }}</span>
