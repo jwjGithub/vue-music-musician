@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
- * @LastEditors: JWJ
- * @LastEditTime: 2020-12-21 14:36:49
+ * @LastEditors: jwj
+ * @LastEditTime: 2020-12-22 23:16:48
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -25,9 +25,8 @@
           <el-form ref="queryForm" label-width="100px" :model="queryForm" :inline="true">
             <div class="query-item">
               <div class="left-query">
-
                 <el-form-item label="分类：" prop="type">
-                  <el-select v-model="queryForm.type" clearable placeholder="" class="w24">
+                  <el-select v-model="queryForm.type" clearable placeholder="" class="w24" @change="getList">
                     <el-option value="" label="全部" />
                     <el-option :value="1" label="词曲" />
                     <el-option :value="2" label="Beat/BGM" />
@@ -37,6 +36,12 @@
                 </el-form-item>
               </div>
               <div class="right-btn">
+                <el-form-item prop="title">
+                  <el-input v-model="queryForm.title" placeholder="请输入作品名称" class="w24"></el-input>
+                </el-form-item>
+                <el-form-item prop="author">
+                  <el-input v-model="queryForm.author" placeholder="请输入作者名称" class="w24"></el-input>
+                </el-form-item>
                 <el-form-item>
                   <el-button type="primary" :loading="loading" @click="getList">
                     <i class="el-icon-search"></i>
@@ -194,6 +199,8 @@ export default {
       queryForm: {
         type: '', // 分类 1词曲2Beat/Bgm 3作曲 4作词
         status: '', // 出售状态 0 待售 1出售 2交易中 3已下架
+        title: '', // 作品名称
+        author: '', // 作者名称
         page: 1, // 当前页
         limit: 20 // 每页条数
       },
@@ -425,5 +432,4 @@ export default {
     }
   }
 }
-
 </style>

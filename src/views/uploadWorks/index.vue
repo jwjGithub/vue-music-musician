@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
  * @LastEditors: jwj
- * @LastEditTime: 2020-12-15 22:17:21
+ * @LastEditTime: 2020-12-22 23:27:27
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -58,6 +58,7 @@
                 :loading="composersLoading"
                 placeholder="请搜索选择"
                 class="w40"
+                popper-class="select-popper-class-author"
               >
                 <el-option
                   v-for="(item,index) in composersList"
@@ -65,6 +66,10 @@
                   :label="item.stageName"
                   :value="item"
                 >
+                  <div class="select-user-head-option">
+                    <img :src="item.profile">
+                    <span>{{ item.stageName }}</span>
+                  </div>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -127,6 +132,7 @@
             <el-form-item v-show="form.type !== 4" label="音频：" prop="musicAtt">
               <el-button type="primary" size="mini" icon="el-icon-plus" :loading="uploadLoading" @click="openFileUpload">{{ uploadName || '上传音频文件' }}</el-button>
               <span class="ft14 c-999 ml10 lh28">支持MP3格式，文件大小不超过20MB</span>
+              <mus-progress ref="mus-progress"></mus-progress>
             </el-form-item>
             <el-form-item>
               <el-checkbox v-model="xuzhi"></el-checkbox>
@@ -188,8 +194,12 @@ import {
   uploadMusic,
   saveWork
 } from '@/api/uploadWorkes'
+import MusProgress from '@/components/MusProgress'
 export default {
   name: 'UploadWorks',
+  components: {
+    MusProgress
+  },
   data() {
     return {
       loading: false,
@@ -413,6 +423,7 @@ export default {
         console.log(file, '-file')
         formData.append('musicFile', file)
         this.uploadLoading = true
+        this.$refs['mus-progress'].open()
         uploadMusic(formData).then(res => {
           let data = res.data || {}
           this.form.duration = data.duration
@@ -420,6 +431,7 @@ export default {
           this.form.musicWatermarkAtt = data.musicWatermarkAtt
           this.uploadLoading = false
           this.uploadName = file.name
+          this.$refs['mus-progress'].ok()
         }).catch(() => {
           this.uploadLoading = false
         })
@@ -434,6 +446,16 @@ export default {
     cursor: pointer;
     margin-right:10px;
     margin-bottom:10px;
+  }
+}
+.select-user-head-option{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  >img{
+    width:24px;
+    height:24px;
+    border-radius: 50%;
   }
 }
 </style>
