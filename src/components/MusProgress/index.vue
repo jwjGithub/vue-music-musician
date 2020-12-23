@@ -3,8 +3,8 @@
  * @version:
  * @Author: jwj
  * @Date: 2020-12-22 22:27:40
- * @LastEditors: jwj
- * @LastEditTime: 2020-12-22 22:41:51
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-12-23 14:14:26
 -->
 <template>
   <div class="mus-progress">
@@ -54,6 +54,11 @@ export default {
           this.percentage++
         }
       }, 50)
+    },
+    error() {
+      clearInterval(this.interval)
+      this.isShow = false
+      this.percentage = 0
     },
     handleClose() {
       this.$emit('handleClose')

@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
- * @LastEditors: jwj
- * @LastEditTime: 2020-12-22 23:27:27
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-12-23 14:23:16
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -34,7 +34,9 @@
                 :remote-method="searchLyricistsList"
                 :loading="lyricistsLoading"
                 placeholder="请搜索选择"
-                class="w40"
+                class="w40 select-author-tag-lyricists"
+                popper-class="select-popper-class-author"
+                @change="(val) => { selectComposersChange(val,'select-author-tag-lyricists') }"
               >
                 <el-option
                   v-for="(item,index) in lyricistsList"
@@ -42,6 +44,10 @@
                   :label="item.stageName"
                   :value="item"
                 >
+                  <div class="select-user-head-option">
+                    <img :src="item.profile">
+                    <span>{{ item.stageName }}</span>
+                  </div>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -57,8 +63,9 @@
                 :remote-method="searchComposersList"
                 :loading="composersLoading"
                 placeholder="请搜索选择"
-                class="w40"
+                class="w40 select-author-tag-composers"
                 popper-class="select-popper-class-author"
+                @change="(val) => { selectComposersChange(val,'select-author-tag-composers') }"
               >
                 <el-option
                   v-for="(item,index) in composersList"
@@ -85,7 +92,9 @@
                 :remote-method="searchProducersList"
                 :loading="producersLoading"
                 placeholder="请搜索选择"
-                class="w40"
+                class="w40 select-author-tag-producers"
+                popper-class="select-popper-class-author"
+                @change="(val) => { selectComposersChange(val,'select-author-tag-producers') }"
               >
                 <el-option
                   v-for="(item,index) in producersList"
@@ -93,6 +102,10 @@
                   :label="item.stageName"
                   :value="item"
                 >
+                  <div class="select-user-head-option">
+                    <img :src="item.profile">
+                    <span>{{ item.stageName }}</span>
+                  </div>
                 </el-option>
               </el-select>
             </el-form-item>
@@ -328,6 +341,18 @@ export default {
         this.producersLoading = false
       })
     },
+    // 曲作者 change 事件
+    selectComposersChange(val, name) {
+      this.$nextTick(() => {
+        let dom = document.querySelector(`.${name} .el-select__tags span`)
+        val?.forEach((item, index) => {
+          if (typeof item === 'string') {
+            let tag = dom.querySelectorAll('.el-tag--info')[index]
+            tag.style.border = '1px dashed #909399'
+          }
+        })
+      })
+    },
     // 打开标签选择
     openDialog() {
       this.dialogOption = {
@@ -432,7 +457,10 @@ export default {
           this.uploadLoading = false
           this.uploadName = file.name
           this.$refs['mus-progress'].ok()
+          this.$refs['upload-file'].value = '' // 清空file文件
         }).catch(() => {
+          this.$refs['upload-file'].value = '' // 清空file文件
+          this.$refs['mus-progress'].error()
           this.uploadLoading = false
         })
       }
