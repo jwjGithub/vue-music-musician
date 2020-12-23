@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
  * @LastEditors: JWJ
- * @LastEditTime: 2020-12-23 14:23:16
+ * @LastEditTime: 2020-12-23 17:38:16
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -22,7 +22,7 @@
             <el-form-item label="作品名称：" prop="title">
               <el-input v-model="form.title" placeholder="请输入" maxlength="30" class="w40"></el-input>
             </el-form-item>
-            <el-form-item v-show="form.type == 1 || form.type == 4" label="词作者：" prop="lyricists">
+            <el-form-item v-if="form.type == 1 || form.type == 4" label="词作者：" prop="lyricists">
               <el-select
                 v-model="form.lyricists"
                 multiple
@@ -51,7 +51,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item v-show="form.type == 1 || form.type == 3" label="曲作者：" prop="composers">
+            <el-form-item v-if="form.type == 1 || form.type == 3" label="曲作者：" prop="composers">
               <el-select
                 v-model="form.composers"
                 multiple
@@ -80,7 +80,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item v-show="form.type == 2" label="制作人：" prop="producers">
+            <el-form-item v-if="form.type == 2" label="制作人：" prop="producers">
               <el-select
                 v-model="form.producers"
                 multiple
@@ -122,7 +122,7 @@
                 <el-button type="text" icon="el-icon-plus" @click="openDialog">添加标签</el-button>
               </div>
             </el-form-item>
-            <el-form-item v-show="form.type != 4" label="速度：" prop="speed">
+            <el-form-item v-if="form.type != 4" label="速度：" prop="speed">
               <div>
                 <el-tag
                   v-for="item in tagListSD"
@@ -138,11 +138,11 @@
             <el-form-item label="价格：" prop="price">
               <el-input v-model="form.price" placeholder="请输入" type="number" class="w40"></el-input>
             </el-form-item>
-            <el-form-item v-show="form.type == 1 || form.type == 4" label="歌词：" prop="lyricContent">
+            <el-form-item v-if="form.type == 1 || form.type == 4" label="歌词：" prop="lyricContent">
               <el-input v-model="form.lyricContent" type="textarea" :rows="4" placeholder="请输入" :resize="'none'" class="w40"></el-input>
               <p class="ft14 c-999 ml10 lh28">支持输入普通歌词和滚动歌词</p>
             </el-form-item>
-            <el-form-item v-show="form.type !== 4" label="音频：" prop="musicAtt">
+            <el-form-item v-if="form.type !== 4" label="音频：" prop="musicAtt">
               <el-button type="primary" size="mini" icon="el-icon-plus" :loading="uploadLoading" @click="openFileUpload">{{ uploadName || '上传音频文件' }}</el-button>
               <span class="ft14 c-999 ml10 lh28">支持MP3格式，文件大小不超过20MB</span>
               <mus-progress ref="mus-progress"></mus-progress>
