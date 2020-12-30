@@ -3,7 +3,7 @@ import router from '@/router'
 import { Notification, MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken, removeToken } from '@/utils/auth'
-
+let messageObj
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
 const service = axios.create({
@@ -52,24 +52,29 @@ service.interceptors.response.use(res => {
   const code = res.data.code
   if (code === 401 || code === 9104) {
     removeToken() // 删除token
-    MessageBox.confirm(
-      (code === 401 ? '登录状态已过期' : '没有权限访问') + '，您可以继续留在该页面，或者返回主页',
-      '系统提示',
-      {
-        confirmButtonText: '返回主页',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
-    ).then(() => {
-      router.push({
-        path: '/'
-      }).catch(() => {
+    if (messageObj === undefined) {
+      messageObj = MessageBox.confirm(
+        (code === 401 ? '登录状态已过期' : '没有权限访问') + '，您可以继续留在该页面，或者返回主页',
+        '系统提示',
+        {
+          confirmButtonText: '返回主页',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).then(() => {
+        messageObj = undefined
+        router.push({
+          path: '/'
+        }).catch(() => {
 
+        })
+        // store.dispatch('user/resetToken').then(() => {
+        //   location.reload() // 为了重新实例化vue-router对象 避免bug
+        // })
+      }).catch(() => {
+        messageObj = undefined
       })
-      // store.dispatch('user/resetToken').then(() => {
-      //   location.reload() // 为了重新实例化vue-router对象 避免bug
-      // })
-    })
+    }
     return Promise.reject('error')
   } else if (code !== 0) {
     Notification.error({
@@ -81,7 +86,6 @@ service.interceptors.response.use(res => {
   }
 },
 error => {
-  // console.log(error.response)
   Message({
     message: error.response.status === 404 ? '网络异常 404' : error.message,
     type: 'error',

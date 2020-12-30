@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
- * @LastEditors: jwj
- * @LastEditTime: 2020-12-22 23:16:48
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-12-29 16:17:42
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -98,17 +98,17 @@
                 <el-button v-if="scope.row.status === 1" size="mini" type="text" @click="openEditPage(scope.row)">编辑</el-button>
                 <el-button v-if="scope.row.status === 2" size="mini" type="text" @click="openFaBu(scope.row)">重新发布</el-button> -->
                 <template v-if="scope.row.postStatus == 0">
-                  <el-button size="mini" type="text">编辑</el-button>
+                  <el-button size="mini" type="text" @click="openEdit(scope.row)">编辑</el-button>
                   <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
                 </template>
                 <template v-if="scope.row.status == 0 && scope.row.postStatus == 1">
-                  <el-button size="mini" type="text">推广</el-button>
-                  <el-button size="mini" type="text">编辑</el-button>
+                  <el-button size="mini" type="text" @click="$message.error('暂无此功能')">推广</el-button>
+                  <el-button size="mini" type="text" @click="openEdit(scope.row)">编辑</el-button>
                   <el-button size="mini" type="text" @click="openXiaJia(1,3,scope.row)">下架</el-button>
                   <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
                 </template>
                 <template v-if="scope.row.status == 3">
-                  <el-button size="mini" type="text">编辑</el-button>
+                  <el-button size="mini" type="text" @click="openEdit(scope.row)">编辑</el-button>
                   <el-button size="mini" type="text" @click="openXiaJia(1,0,scope.row)">重新上架</el-button>
                   <el-button size="mini" type="text" class="c-red" @click="openDelete(1,scope.row)">删除</el-button>
                 </template>
@@ -408,6 +408,10 @@ export default {
         this.yuLiuList = res.data || []
       })
       console.log(row, 'rrrr')
+    },
+    // 跳转音乐作品编辑
+    openEdit(row) {
+      this.Go('/uploadWorks', { id: row.id })
     }
   }
 }

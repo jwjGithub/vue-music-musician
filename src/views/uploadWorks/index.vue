@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
  * @LastEditors: JWJ
- * @LastEditTime: 2020-12-23 17:38:16
+ * @LastEditTime: 2020-12-29 15:59:43
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -205,7 +205,8 @@ import {
   searchMusicians,
   getTagsByType,
   uploadMusic,
-  saveWork
+  saveWork,
+  getMusicUploadInfo
 } from '@/api/uploadWorkes'
 import MusProgress from '@/components/MusProgress'
 export default {
@@ -283,8 +284,17 @@ export default {
     this.getTagListFG()
     this.getTagListQG()
     this.getTagListSD()
+    if (this.$route.query && this.$route.query.id) {
+      this.getMusicUploadInfo(this.$route.query.id)
+    }
   },
   methods: {
+    // 获取上传的音乐信息
+    getMusicUploadInfo(id) {
+      getMusicUploadInfo({ id: id }).then(res => {
+        console.log(res, '--res')
+      })
+    },
     // 获取风格标签列表
     getTagListFG() {
       getTagsByType({ type: 1 }).then(res => {

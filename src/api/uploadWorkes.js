@@ -1,3 +1,10 @@
+/*
+ * @Date: 2020-11-23 09:29:25
+ * @Description: 上传作品接口
+ * @LastEditors: JWJ
+ * @LastEditTime: 2020-12-29 15:58:05
+ * @FilePath: \vue-music-musician\src\api\uploadWorkes.js
+ */
 import request from '@/utils/request'
 
 // 模糊搜索站内音乐人
@@ -29,6 +36,14 @@ export function uploadMusic(data) {
 export function saveWork(data) {
   return request({
     url: '/music/base/uploadWork',
+    method: 'post',
+    data: data
+  })
+}
+// 获取上传作品信息
+export function getMusicUploadInfo(data) {
+  return request({
+    url: '/music/base/getMusicUploadInfo',
     method: 'post',
     data: data
   })
