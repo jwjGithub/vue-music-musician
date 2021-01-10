@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
- * @LastEditors: JWJ
- * @LastEditTime: 2020-12-29 15:59:43
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-01-10 22:22:18
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -280,7 +280,18 @@ export default {
       }
     }
   },
+  watch: {
+    $route(route) {
+      let type = route.query.type
+      if (type) {
+        this.$set(this.form, 'type', Number(type))
+      }
+    }
+  },
   created() {
+    if (this.$route.query.type) {
+      this.$set(this.form, 'type', Number(this.$route.query.type))
+    }
     this.getTagListFG()
     this.getTagListQG()
     this.getTagListSD()

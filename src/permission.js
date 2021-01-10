@@ -1,8 +1,8 @@
 /*
  * @Date: 2020-11-13 09:28:53
  * @Description: 过滤器
- * @LastEditors: jwj
- * @LastEditTime: 2020-12-12 14:35:26
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-01-10 22:07:05
  * @FilePath: \vue-music-musician\src\permission.js
  */
 import router from './router'
@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // 否则全部重定向到曲库
-      goMusic('logOut=Y')
+      goMusic('/', 'logOut=Y')
       // next()
       // next(`/login?redirect=${to.path}`)
       NProgress.done()

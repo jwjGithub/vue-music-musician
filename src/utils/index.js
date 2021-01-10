@@ -1,4 +1,4 @@
-// import router from '@/router'
+import { getToken, setToken } from '@/utils/auth'
 /**
  * Check if an element has a class
  * @param {HTMLElement} elm
@@ -122,11 +122,6 @@ export function strlen(str) {
 }
 
 // 调转到music系统
-export function goMusic(query) {
-  // let url = 'http://192.168.0.112:9081/#/?'
-  let url = 'http://47.94.21.246:9081/#/?'
-  if (query) {
-    url += query
-  }
-  window.location = url
+export function goMusic(url = '/', query = '') {
+  window.location = `http://47.94.21.246:9081/#${url}?token=${getToken()}&${query}`
 }

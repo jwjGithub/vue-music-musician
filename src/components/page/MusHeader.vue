@@ -7,17 +7,17 @@
         </div>
       </div>
       <div class="center">
-        <el-button class="text-btn" :class="{'active': selectNav == 'home'}" type="text" @click="Go('/')">首页</el-button>
-        <el-button class="text-btn" type="text">词曲库</el-button>
-        <el-button class="text-btn" type="text">Beat/BGM</el-button>
+        <el-button class="text-btn" :class="{'active': selectNav == 'home'}" type="text" @click="goMusic('/')">首页</el-button>
+        <el-button class="text-btn" :class="{'active': selectNav == 'library'}" type="text" @click="goMusic('/library')">词曲库</el-button>
+        <!-- <el-button class="text-btn" type="text">Beat/BGM</el-button> -->
         <el-button class="text-btn" type="text">合作</el-button>
-        <el-button class="text-btn" :class="{'active': selectNav == 'ranking'}" type="text" @click="Go('/ranking')">榜单</el-button>
+        <el-button class="text-btn" :class="{'active': selectNav == 'ranking'}" type="text" @click="goMusic('/ranking')">榜单</el-button>
       </div>
       <div class="right">
         <div class="search-input-row mr11">
-          <el-input class="search-input" placeholder="歌曲/歌单/音乐人"></el-input>
+          <el-input v-model="searchInput" class="search-input" placeholder="歌曲/歌单/音乐人"></el-input>
           <div class="search-icon">
-            <i class="icon icon-search"></i>
+            <i class="icon icon-search" @click="goSearch"></i>
           </div>
         </div>
         <!-- <div class="musician">
@@ -25,27 +25,27 @@
               <span>音乐人</span>
             </div> -->
         <el-popover
-          v-if="$store.getters.userInfo.userId"
+          v-if="$store.getters.userInfo.userId && $store.getters.loginType == 'musician'"
           placement="bottom"
           width="116"
           trigger="hover"
         >
           <div class="popover-list">
             <div class="list">
-              <el-button class="text-btn" type="text">上传原创</el-button>
+              <el-button class="text-btn" type="text" @click="goUploadMusic(1)">上传词曲</el-button>
             </div>
             <div class="list">
-              <el-button class="text-btn" type="text">上传翻唱</el-button>
+              <el-button class="text-btn" type="text" @click="goUploadMusic(2)">上传Beat/BGM</el-button>
             </div>
             <div class="list">
-              <el-button class="text-btn" type="text">上传伴奏</el-button>
+              <el-button class="text-btn" type="text" @click="goUploadMusic(3)">上传作曲</el-button>
             </div>
             <div class="list">
-              <el-button class="text-btn" type="text">上传视频</el-button>
+              <el-button class="text-btn" type="text" @click="goUploadMusic(4)">上传作词</el-button>
             </div>
-            <div class="list">
+            <!-- <div class="list">
               <el-button class="text-btn" type="text" @click="Go('/startPlay')">歌曲管理</el-button>
-            </div>
+            </div> -->
           </div>
           <div slot="reference" class="upload">
             <i class="icon icon-upload"></i>
@@ -59,6 +59,7 @@
         >
           <div class="popover-list">
             <div v-if="$store.getters.loginType == 'company'" class="list">
+              <!-- <el-button class="text-btn" type="text" @click="GoWindow('http://192.168.3.18:9528/#/?token=' + getToken())">办公空间</el-button> -->
               <el-button class="text-btn" type="text" @click="GoWindow('http://47.94.21.246:9082/#/?token=' + getToken())">办公空间</el-button>
             </div>
             <div v-if="$store.getters.loginType == 'musician'" class="list">
@@ -178,10 +179,16 @@ export default {
     selectNav: {
       type: String,
       default: ''
+    },
+    searchValue: {
+      type: String,
+      default: ''
     }
+
   },
   data() {
     return {
+      searchInput: '',
       dialogOption: {
         showPass: false, // 是否显示密码
         loading: false,
@@ -204,6 +211,7 @@ export default {
     }
   },
   created() {
+    this.searchInput = this.searchValue
     console.log(this.$store.getters.userInfo.userId)
   },
   methods: {
@@ -232,7 +240,8 @@ export default {
     },
     logOut() {
       this.$store.dispatch('FedLogOut').then(() => {
-        this.goMusic('logOut=Y')
+        console.log('退出')
+        location.reload('/')
       })
     },
     // 登录提交
@@ -274,6 +283,14 @@ export default {
     // 跳转注册
     goRegister(type) {
       this.Go('/register/' + type)
+    },
+    // 跳转搜索
+    goSearch() {
+      this.goMusic('/library', `searchValue=${this.searchInput}`)
+    },
+    // 跳转上传词曲
+    goUploadMusic(type) {
+      this.Go('/uploadWorks', { type: type })
     }
   }
 }
@@ -310,8 +327,8 @@ export default {
         margin: 0 10px;
         border-bottom:4px solid #FFF;
         &:hover,&.active{
-          border-bottom:4px solid #ffae00;
-          color:#ffae00;
+          border-bottom:4px solid #cb356b;
+          color:#cb356b;
         }
       }
     }
@@ -345,7 +362,7 @@ export default {
         width: 80px;
         height: 80px;
         margin-right: 23px;
-        background-color: #ffae00;
+        background-color: #cb356b;
         border-radius: 3px;
         text-align: center;
         justify-content: center;;
@@ -377,7 +394,7 @@ export default {
       .login-btn{
         font-size:14px;
         &:hover{
-          color:#ffae00;
+          color:#cb356b;
         }
       }
       .personal-link{
@@ -470,7 +487,7 @@ export default {
     .text-btn{
       color:inherit;
       &:hover{
-        color:#ffae00;
+        color:#cb356b;
       }
     }
   }
