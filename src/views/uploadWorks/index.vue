@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-10 22:22:18
+ * @LastEditors: JWJ
+ * @LastEditTime: 2021-01-11 20:13:22
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -479,6 +479,7 @@ export default {
           this.uploadName = file.name
           this.$refs['mus-progress'].ok()
           this.$refs['upload-file'].value = '' // 清空file文件
+          this.$refs['form'].validateField('musicAtt')
         }).catch(() => {
           this.$refs['upload-file'].value = '' // 清空file文件
           this.$refs['mus-progress'].error()

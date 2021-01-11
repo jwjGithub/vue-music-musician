@@ -4,7 +4,7 @@
  * @Author: jwj
  * @Date: 2020-12-22 22:27:40
  * @LastEditors: JWJ
- * @LastEditTime: 2020-12-23 14:14:26
+ * @LastEditTime: 2021-01-11 20:20:02
 -->
 <template>
   <div class="mus-progress">
@@ -41,6 +41,7 @@ export default {
   methods: {
     open(json = {}) {
       this.isShow = true
+      this.percentage = 0
       this.interval = setInterval(() => {
         if (this.percentage < 99) {
           this.percentage++
@@ -53,7 +54,7 @@ export default {
         if (this.percentage < 100) {
           this.percentage++
         }
-      }, 50)
+      }, 30)
     },
     error() {
       clearInterval(this.interval)
