@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
- * @LastEditors: JWJ
- * @LastEditTime: 2021-01-11 20:13:22
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-01-18 20:33:56
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -437,6 +437,7 @@ export default {
           saveWork(json).then(res => {
             this.loading = false
             this.$message.success('提交成功')
+            this.uploadName = ''
             this.resetForm('form')
           }).catch(() => {
             this.loading = false
