@@ -123,5 +123,5 @@ export function strlen(str) {
 
 // 调转到music系统
 export function goMusic(url = '/', query = '') {
-  window.location = `http://47.94.21.246:9081/#${url}?token=${getToken()}&${query}`
+  window.location = `http://47.94.21.246:9081/#${url}?token=${getToken() || ''}&${query}`
 }
