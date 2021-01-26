@@ -35,13 +35,13 @@
               <el-button class="text-btn" type="text" @click="goUploadMusic(1)">上传词曲</el-button>
             </div>
             <div class="list">
-              <el-button class="text-btn" type="text" @click="goUploadMusic(2)">上传Beat/BGM</el-button>
+              <el-button class="text-btn" type="text" @click="goUploadMusic(4)">上传作词</el-button>
             </div>
             <div class="list">
               <el-button class="text-btn" type="text" @click="goUploadMusic(3)">上传作曲</el-button>
             </div>
             <div class="list">
-              <el-button class="text-btn" type="text" @click="goUploadMusic(4)">上传作词</el-button>
+              <el-button class="text-btn" type="text" @click="goUploadMusic(2)">上传Beat/BGM</el-button>
             </div>
             <!-- <div class="list">
               <el-button class="text-btn" type="text" @click="Go('/startPlay')">歌曲管理</el-button>
@@ -59,7 +59,6 @@
         >
           <div class="popover-list">
             <div v-if="$store.getters.loginType == 'company'" class="list">
-              <!-- <el-button class="text-btn" type="text" @click="GoWindow('http://192.168.3.18:9528/#/?token=' + getToken())">办公空间</el-button> -->
               <el-button class="text-btn" type="text" @click="GoWindow('http://47.94.21.246:9082/#/?token=' + getToken())">办公空间</el-button>
             </div>
             <div v-if="$store.getters.loginType == 'musician'" class="list">
@@ -70,7 +69,8 @@
             </div>
           </div>
           <div slot="reference" class="personal-link">
-            <i class="icon icon-login-user"></i>
+            <!-- <i class="icon icon-login-user"></i> -->
+            <img :src="$store.getters.userInfo.profileUrl || profileUrl" class="profileUrl">
             <span>{{ $store.getters.userInfo.realname }}</span>
           </div>
         </el-popover>
@@ -188,6 +188,7 @@ export default {
   },
   data() {
     return {
+      profileUrl: require('@/assets/images/index/icon-login-user.png'),
       searchInput: '',
       dialogOption: {
         showPass: false, // 是否显示密码
@@ -403,6 +404,11 @@ export default {
         align-items:center;
         cursor: pointer;
         margin-right:20px;
+        .profileUrl{
+          width:30px;
+          height:30px;
+          border-radius: 50%;
+        }
         >span{
           margin-top:8px;
           color:#333;
