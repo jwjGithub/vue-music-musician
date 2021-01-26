@@ -241,7 +241,7 @@ export default {
     },
     logOut() {
       this.$store.dispatch('FedLogOut').then(() => {
-        this.goMusic('logOut=Y')
+        this.goMusic('/', 'logOut=Y')
         // location.reload('/')
       })
     },
