@@ -1,8 +1,8 @@
 <!--
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-01-18 20:33:56
+ * @LastEditors: JWJ
+ * @LastEditTime: 2021-01-27 10:29:59
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -14,9 +14,9 @@
             <el-form-item label="上传作品类型：" prop="type">
               <el-select v-model="form.type" class="w40" @change="clearValidate('form')">
                 <el-option label="词曲" :value="1" />
-                <el-option label="Beat/BGM" :value="2" />
-                <el-option label="作曲" :value="3" />
                 <el-option label="作词" :value="4" />
+                <el-option label="作曲" :value="3" />
+                <el-option label="Beat/BGM" :value="2" />
               </el-select>
             </el-form-item>
             <el-form-item label="作品名称：" prop="title">

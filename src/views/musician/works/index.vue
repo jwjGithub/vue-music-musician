@@ -2,7 +2,7 @@
  * @Date: 2020-11-26 14:19:44
  * @Description: 作品管理
  * @LastEditors: JWJ
- * @LastEditTime: 2020-12-29 16:17:42
+ * @LastEditTime: 2021-01-27 10:30:11
  * @FilePath: \vue-music-musician\src\views\musician\works\index.vue
 -->
 <template>
@@ -29,9 +29,9 @@
                   <el-select v-model="queryForm.type" clearable placeholder="" class="w24" @change="getList">
                     <el-option value="" label="全部" />
                     <el-option :value="1" label="词曲" />
-                    <el-option :value="2" label="Beat/BGM" />
-                    <el-option :value="3" label="作曲" />
                     <el-option :value="4" label="作词" />
+                    <el-option :value="3" label="作曲" />
+                    <el-option :value="2" label="Beat/BGM" />
                   </el-select>
                 </el-form-item>
               </div>
