@@ -4,6 +4,7 @@ import { Notification, MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken, removeToken } from '@/utils/auth'
 let messageObj
+let cancel
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
 const service = axios.create({
@@ -12,6 +13,7 @@ const service = axios.create({
   // 超时
   timeout: 100000
 })
+
 // request拦截器
 service.interceptors.request.use(
   config => {
@@ -86,13 +88,20 @@ service.interceptors.response.use(res => {
   }
 },
 error => {
-  Message({
-    message: error.response.status === 404 ? '网络异常 404' : error.message,
-    type: 'error',
-    duration: 5 * 1000
-  })
-  return Promise.reject(error)
-}
-)
+  if (axios.isCancel(error)) {
+    // 中断promise链接
+    return new Promise(() => {})
+  } else {
+    Message({
+      message: error.response.status === 404 ? '网络异常 404' : error.message,
+      type: 'error',
+      duration: 5 * 1000
+    })
+    // 把错误继续向下传递
+    return Promise.reject(error)
+  }
+
+  // return Promise.reject(error)
+})
 
 export default service

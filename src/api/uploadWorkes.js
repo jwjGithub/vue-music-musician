@@ -2,7 +2,7 @@
  * @Date: 2020-11-23 09:29:25
  * @Description: 上传作品接口
  * @LastEditors: JWJ
- * @LastEditTime: 2020-12-29 15:58:05
+ * @LastEditTime: 2021-01-28 11:37:33
  * @FilePath: \vue-music-musician\src\api\uploadWorkes.js
  */
 import request from '@/utils/request'
@@ -25,8 +25,9 @@ export function getTagsByType(data) {
   })
 }
 // 上传音乐作品附件(mp3)
-export function uploadMusic(data) {
+export function uploadMusic(data, source) {
   return request({
+    cancelToken: source ? source.token : '', // 每次请求取消凭证;
     url: '/music/base/uploadMusic',
     method: 'post',
     data: data

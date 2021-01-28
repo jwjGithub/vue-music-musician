@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
  * @LastEditors: JWJ
- * @LastEditTime: 2021-01-27 10:29:59
+ * @LastEditTime: 2021-01-28 11:38:36
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -145,7 +145,7 @@
             <el-form-item v-if="form.type !== 4" label="音频：" prop="musicAtt">
               <el-button type="primary" size="mini" icon="el-icon-plus" :loading="uploadLoading" @click="openFileUpload">{{ uploadName || '上传音频文件' }}</el-button>
               <span class="ft14 c-999 ml10 lh28">支持MP3格式，文件大小不超过20MB</span>
-              <mus-progress ref="mus-progress"></mus-progress>
+              <mus-progress ref="mus-progress" @cancel="handleCancel"></mus-progress>
             </el-form-item>
             <el-form-item>
               <el-checkbox v-model="xuzhi"></el-checkbox>
@@ -209,6 +209,7 @@ import {
   getMusicUploadInfo
 } from '@/api/uploadWorkes'
 import MusProgress from '@/components/MusProgress'
+import axios from 'axios'
 export default {
   name: 'UploadWorks',
   components: {
@@ -277,7 +278,8 @@ export default {
       dialogOption: {
         title: '',
         show: false
-      }
+      },
+      uploadOption: null
     }
   },
   watch: {
@@ -471,7 +473,10 @@ export default {
         formData.append('musicFile', file)
         this.uploadLoading = true
         this.$refs['mus-progress'].open()
-        uploadMusic(formData).then(res => {
+        let CancelToken = axios.CancelToken
+        let source = CancelToken.source()
+        this.uploadOption = source
+        uploadMusic(formData, source).then(res => {
           let data = res.data || {}
           this.form.duration = data.duration
           this.form.musicAtt = data.musicAtt
@@ -487,6 +492,12 @@ export default {
           this.uploadLoading = false
         })
       }
+    },
+    // 取消上传
+    handleCancel() {
+      this.uploadOption.cancel('取消请求')
+      this.$refs['upload-file'].value = '' // 清空file文件
+      this.uploadLoading = false
     }
   }
 }
