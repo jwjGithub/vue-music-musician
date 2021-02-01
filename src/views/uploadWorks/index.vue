@@ -2,7 +2,7 @@
  * @Date: 2020-11-20 14:30:56
  * @Description: 上传作品
  * @LastEditors: JWJ
- * @LastEditTime: 2021-01-28 11:38:36
+ * @LastEditTime: 2021-02-01 14:43:35
  * @FilePath: \vue-music-musician\src\views\uploadWorks\index.vue
 -->
 <template>
@@ -305,7 +305,37 @@ export default {
     // 获取上传的音乐信息
     getMusicUploadInfo(id) {
       getMusicUploadInfo({ id: id }).then(res => {
-        console.log(res, '--res')
+        let data = res.data
+        this.form = {
+          id: data.id,
+          type: data.type, // 作品类型(1：词曲，2：BEATBGM，3：作曲，4：作词)
+          musicAtt: data.musicAtt, // 音乐作品附件id
+          duration: data.duration, // 时长
+          musicWatermarkAtt: data.musicWatermarkAtt, // 带水印音乐作品附件id
+          title: data.title, // 作品名称
+          composers: data.composers, // 曲作者
+          lyricists: data.lyricists, // 词作者
+          producers: data.producers, // 制作人
+          price: data.price, // 报价
+          lyricContent: data.lyricContent, // 歌词文本
+          tags: [], // 标签
+          speed: data.speed, // 速度
+          postType: '' // 提交类型(save:保存到草稿箱,post:发布)
+        }
+        data.styleTags?.forEach(item => {
+          this.tagListFG.forEach(item2 => {
+            if (item === item2.code) {
+              this.tagSelect(item2)
+            }
+          })
+        })
+        data.emotionTags?.forEach(item => {
+          this.tagListQG.forEach(item2 => {
+            if (item === item2.code) {
+              this.tagSelect(item2)
+            }
+          })
+        })
       })
     },
     // 获取风格标签列表
